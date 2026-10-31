@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>SUPERVSK · El despertar V25.1</title>
+<title>SUPERVSK · El despertar V36</title>
 <style>
 :root{color-scheme:dark;font-family:system-ui,-apple-system,Segoe UI,Arial,sans-serif} body{background:#071326} #game{background:linear-gradient(#102c50,#f2a66d)}
 *{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;min-height:100%;overflow:hidden;background:#07152d;touch-action:none;overscroll-behavior:none}
@@ -17,13 +17,16 @@ canvas{display:block;position:absolute;inset:0;width:100%;height:100%;image-rend
 #hud{position:absolute;inset:env(safe-area-inset-top) 0 auto 0;display:flex;justify-content:space-between;align-items:flex-start;padding:12px 14px;pointer-events:none;text-shadow:0 2px 4px #001}
 .pill{background:linear-gradient(135deg,#06152de8,#102c4be0);border:1px solid #9edbff66;border-radius:12px;padding:8px 12px;font-size:12px;letter-spacing:.08em;box-shadow:0 6px 22px #001a35aa;backdrop-filter:blur(8px)}
 #help{position:absolute;top:58px;left:14px;color:#dcecff;font-size:11px;opacity:.85;pointer-events:none}
-#controls{position:absolute;inset:auto 0 max(14px,env(safe-area-inset-bottom)) 0;display:flex;justify-content:space-between;align-items:end;padding:0 18px;pointer-events:none}
-.cluster{display:flex;gap:10px;align-items:end;pointer-events:auto}
-.ctrl{touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;width:58px;height:58px;border-radius:50%;border:1px solid #d9edff99;background:linear-gradient(145deg,#24618ddd,#071a38ed);color:white;font-weight:800;font-size:12px;box-shadow:0 6px 18px #0009,inset 0 2px 4px #ffffff44;touch-action:none;user-select:none;-webkit-user-select:none}
-.ctrl:active,.ctrl.active{background:#2589e8dd;transform:scale(.96)}
-.ctrl.big{width:68px;height:68px;background:linear-gradient(145deg,#ff6b66,#941d38);border-color:#ffd1b8;box-shadow:0 0 20px #ff485866,inset 0 2px 5px #ffffff66}
-#stick{touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;width:124px;height:124px;border-radius:50%;border:1px solid #d9edff55;background:#0a254a88;position:relative;touch-action:none;pointer-events:auto}
-#knob{width:48px;height:48px;position:absolute;left:38px;top:38px;border-radius:50%;background:#b8ddffbb;border:2px solid white;box-shadow:0 2px 8px #0008}
+#controls{position:absolute;inset:auto 0 max(14px,env(safe-area-inset-bottom)) 0;display:flex;justify-content:space-between;align-items:end;padding:0 clamp(14px,3vw,30px);gap:clamp(12px,3vw,28px);pointer-events:none}
+.cluster{display:flex;align-items:end;pointer-events:auto}
+.action-grid{display:grid;grid-template-columns:repeat(3,minmax(62px,76px));grid-template-rows:repeat(2,64px);gap:10px;align-items:stretch}
+.ctrl{width:100%;height:100%;min-width:62px;min-height:62px;border-radius:20px;border:2px solid #d9edffbb;background:linear-gradient(145deg,#24618df2,#071a38f5);color:white;font-weight:900;font-size:12px;letter-spacing:.02em;box-shadow:0 6px 18px #000b,inset 0 2px 4px #ffffff55;touch-action:none;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent;display:flex;align-items:center;justify-content:center;padding:4px;position:relative}
+.ctrl:active,.ctrl.active{background:linear-gradient(145deg,#38a4ff,#0755a8);transform:scale(.96);border-color:#fff;box-shadow:0 0 0 3px #7dd8ff55,0 0 22px #36aaff99,inset 0 2px 5px #ffffff77}
+.ctrl.big{border-radius:22px;background:linear-gradient(145deg,#ff6b66,#941d38);border-color:#ffd1b8;box-shadow:0 0 20px #ff485866,inset 0 2px 5px #ffffff66}
+.ctrl.big:active,.ctrl.big.active{background:linear-gradient(145deg,#ff9b72,#c52848);box-shadow:0 0 0 3px #ffd0b855,0 0 24px #ff596caa}
+#stick{width:132px;height:132px;flex:0 0 132px;border-radius:50%;border:2px solid #d9edff99;background:radial-gradient(circle at 35% 28%,#24517a99,#071b39eF);position:relative;touch-action:none;pointer-events:auto;box-shadow:0 8px 24px #0009,inset 0 2px 14px #8bcfff22;-webkit-tap-highlight-color:transparent}
+#knob{width:54px;height:54px;position:absolute;left:37px;top:37px;border-radius:50%;background:linear-gradient(145deg,#e5f7ff,#79b8ed);border:3px solid white;box-shadow:0 3px 12px #000b,inset 0 2px 5px #fff;pointer-events:none}
+#stick::after{content:"";position:absolute;inset:18%;border:1px dashed #d9edff44;border-radius:50%;pointer-events:none}
 #overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(#06152dcc,#07152dee);padding:22px}
 .panel{max-width:480px;text-align:center;background:#0b2040ed;border:1px solid #74b8ff66;border-radius:22px;padding:25px;box-shadow:0 15px 50px #0009}
 h1{margin:0;color:#fff;font-size:clamp(32px,8vw,56px);letter-spacing:.08em;text-shadow:3px 3px #b32939}
@@ -36,10 +39,31 @@ h1{margin:0;color:#fff;font-size:clamp(32px,8vw,56px);letter-spacing:.08em;text-
 #pauseLayer .panel{width:min(420px,94vw)}
 #pauseLayer button{border:0;border-radius:10px;padding:12px 18px;margin:5px;background:#2589e8;color:white;font-weight:900}
 #pauseLayer button.secondary{background:#344b68}
-@media (pointer:fine){#controls{opacity:.72} .ctrl{width:54px;height:54px}}
-@media (max-width:700px){#controls{padding:0 8px}.cluster{gap:5px}.ctrl{width:43px;height:43px;font-size:9px}.ctrl.big{width:54px;height:54px}}
-@media (orientation:portrait){#help{top:60px;max-width:58vw;line-height:1.35}.ctrl{width:48px;height:48px;font-size:10px}#stick{width:104px;height:104px}#knob{left:30px;top:30px;width:42px;height:42px}#controls{padding:0 10px;gap:6px}.cluster{gap:6px}#fullscreen{top:103px}}
-@media (max-height:430px) and (orientation:landscape){#controls{bottom:6px}.ctrl{width:46px;height:46px}#stick{width:88px;height:88px}#knob{left:22px;top:22px}#help{top:52px}}
+@media (pointer:fine){#controls{opacity:1}.ctrl{min-width:64px;min-height:64px}}
+@media (max-width:760px){
+ #controls{padding:0 12px;gap:10px}
+ #stick{width:112px;height:112px;flex-basis:112px}
+ #knob{width:48px;height:48px;left:30px;top:30px}
+ .action-grid{grid-template-columns:repeat(3,minmax(54px,1fr));grid-template-rows:repeat(2,58px);gap:7px;flex:1;max-width:260px}
+ .ctrl{min-width:54px;min-height:54px;font-size:10px;border-radius:17px}
+}
+@media (orientation:portrait){
+ #help{top:60px;max-width:58vw;line-height:1.35}
+ #controls{padding:0 10px;gap:8px}
+ #stick{width:96px;height:96px;flex-basis:96px}
+ #knob{width:42px;height:42px;left:25px;top:25px}
+ .action-grid{grid-template-columns:repeat(3,minmax(48px,1fr));grid-template-rows:repeat(2,52px);gap:6px;max-width:220px}
+ .ctrl{min-width:48px;min-height:48px;font-size:9px;border-radius:15px}
+ #fullscreen{top:103px}
+}
+@media (max-height:430px) and (orientation:landscape){
+ #controls{bottom:6px;padding:0 12px}
+ #stick{width:92px;height:92px;flex-basis:92px}
+ #knob{width:42px;height:42px;left:23px;top:23px}
+ .action-grid{grid-template-rows:repeat(2,48px);grid-template-columns:repeat(3,minmax(54px,68px));gap:6px}
+ .ctrl{min-height:46px;min-width:54px;font-size:9px}
+ #help{top:52px}
+}.ctrl{width:46px;height:46px}#stick{width:88px;height:88px}#knob{left:22px;top:22px}#help{top:52px}}
 </style>
 </head>
 <body>
@@ -48,21 +72,24 @@ h1{margin:0;color:#fff;font-size:clamp(32px,8vw,56px);letter-spacing:.08em;text-
 <div id="hud"><div class="pill">SUPERVSK · V36</div><div class="pill" id="status">ENERGÍA 100 · VUELO LISTO</div></div>
 <button id="pause" aria-label="Pausar">Ⅱ PAUSA</button>
 <button id="fullscreen" aria-label="Activar pantalla completa">⛶ PANTALLA</button>
-<div id="help">Mover: stick / A-D · Saltar: ESPACIO · Volar: V · Golpe: J · Calor: K · Rescate: E</div>
+<div id="help">Mover: joystick / A-D · Volar: mantener VUELO + joystick · Saltar · Puñetazo · Rayo · Impulso · Rescate</div>
 <div id="controls">
   <div class="cluster"><div id="stick"><div id="knob"></div></div></div>
-  <div class="cluster">
-    <button class="ctrl" id="jump">SALTO</button>
-    <button class="ctrl big" id="fly">VUELO</button>
-    <button class="ctrl" id="hit">PUÑETAZO</button><button class="ctrl" id="heat">RAYO</button><button class="ctrl" id="dash">IMPULSO</button><button class="ctrl" id="rescue">RESCATE</button>
+  <div class="cluster action-grid" aria-label="Controles de acción">
+    <button class="ctrl" id="jump" aria-label="Saltar" title="Saltar">SALTO</button>
+    <button class="ctrl big" id="fly" aria-label="Mantener para volar" title="Mantener para volar">VUELO</button>
+    <button class="ctrl" id="hit" aria-label="Puñetazo" title="Puñetazo">GOLPE</button>
+    <button class="ctrl" id="heat" aria-label="Rayo de calor" title="Rayo de calor">RAYO</button>
+    <button class="ctrl" id="dash" aria-label="Impulso" title="Impulso">IMPULSO</button>
+    <button class="ctrl" id="rescue" aria-label="Rescatar civil" title="Rescatar civil">RESCATE</button>
   </div>
 </div>
 <div id="overlay"><div class="panel">
 <h1>SUPERVSK</h1>
 <p>CAPÍTULO 1 · LA AMENAZA SOBRE METRÓPOLIS · V36</p>
-<p>V36 integra la aventura, el combate y los controles revisados en una única actualización. Rescata civiles y derrota al centinela.</p>
+<p>Nueva edición integrada: controles táctiles ampliados, respuesta multitoque y movimiento independiente del mando físico. Rescata civiles, recupera los siete núcleos y derrota al centinela.</p>
 <button id="start">COMENZAR PARTIDA</button>
-<p class="small">V36 · Actualización integrada · iPhone / iPad · Surface / Windows · teclado, táctil y mando</p>
+<p class="small">V36 · Controles accesibles y multitoque · iPhone / iPad · Surface / Windows · teclado, táctil y mando</p>
 </div></div>
 <div id="pauseLayer"><div class="panel"><h1>PAUSA</h1><p>La ciudad espera. Tómate un respiro.</p><button id="resume">CONTINUAR</button><button class="secondary" id="restart">REINICIAR</button></div></div>
 </div>
@@ -395,14 +422,14 @@ function update(){
  }
  const flying=(keys.fly||gp.fly)&&energy>0;
  let ax=(keys.right?1:0)-(keys.left?1:0);
- if(touchStickActive)ax=stickX;else if(Math.abs(padX)>.12)ax=padX;
+ if(touchStickActive)ax=Math.abs(stickX)>.12?stickX:0;
+ else if(Math.abs(padX)>.12)ax=padX;
  hero.vx=ax*(flying?4.8:3.5);if(ax)hero.facing=Math.sign(ax);
  if((keys.dash||gp.dash)&&dashCooldown<=0&&energy>=8){dashTimer=10;dashCooldown=48;energy=Math.max(0,energy-8);hero.inv=Math.max(hero.inv,14);hero.vx=hero.facing*11;hero.vy*=.35;burst(hero.x+17,hero.y+29,"#8cecff",14,3);message="¡Impulso heroico!";keys.dash=false;gp.dash=false;}
  if(dashTimer>0)hero.vx=hero.facing*11;
  if((keys.jump||gp.jump)&&hero.onGround){hero.vy=-10.8;hero.onGround=false;keys.jump=false}
  if(flying){
-   let vertical=(keys.up?-1:0)+(keys.down?1:0);
-   if(touchStickActive)vertical=stickY;else if(Math.abs(padY)>.18)vertical=padY;
+   const vertical=(keys.up?-1:0)+(keys.down?1:0)+(touchStickActive?(Math.abs(stickY)>.18?stickY:0):(Math.abs(padY)>.18?padY:0));
    hero.vy+=(vertical*0.62-hero.vy*0.16);
    hero.vy=Math.max(-5.2,Math.min(5.2,hero.vy));
    energy=Math.max(0,energy-.045);
@@ -452,44 +479,94 @@ function update(){
 }
 function loop(){update();draw();requestAnimationFrame(loop)}loop();
 document.getElementById('start').addEventListener('click',()=>{started=true;overlay.style.display='none'});
-// Controles táctiles: cada botón mantiene su propio conjunto de punteros activos.
-const activeButtonPointers=new Map();
 function bindHold(id,k){
- const el=document.getElementById(id); if(!el)return;
- const active=new Set(); activeButtonPointers.set(k,active);
- const press=e=>{e.preventDefault();try{el.setPointerCapture(e.pointerId)}catch(_){}active.add(e.pointerId);keys[k]=true;el.classList.add('active')};
- const release=e=>{if(active.has(e.pointerId))active.delete(e.pointerId);keys[k]=active.size>0;if(!keys[k])el.classList.remove('active')};
+ const el=document.getElementById(id);
+ const activePointers=new Set();
+ const press=e=>{
+  e.preventDefault();
+  activePointers.add(e.pointerId);
+  keys[k]=true;el.classList.add('active');
+  try{el.setPointerCapture(e.pointerId)}catch(_){}
+ };
+ const release=e=>{
+  if(activePointers.has(e.pointerId))activePointers.delete(e.pointerId);
+  keys[k]=activePointers.size>0;
+  if(!keys[k])el.classList.remove('active');
+ };
  el.addEventListener('pointerdown',press,{passive:false});
  ['pointerup','pointercancel','lostpointercapture'].forEach(t=>el.addEventListener(t,release));
 }
-['jump','fly','hit','heat','dash','rescue'].forEach(id=>bindHold(id,id));
+bindHold('jump','jump');bindHold('fly','fly');bindHold('hit','hit');bindHold('heat','heat');bindHold('dash','dash');bindHold('rescue','rescue');
 const stick=document.getElementById('stick'),knob=document.getElementById('knob');let stickId=null;
 function moveStick(e){
  const r=stick.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2;
- let dx=e.clientX-cx,dy=e.clientY-cy;const max=Math.max(20,Math.min(r.width,r.height)*.28);
- const len=Math.hypot(dx,dy)||1,scale=Math.min(1,max/len);dx*=scale;dy*=scale;
- stickX=dx/max;stickY=dy/max;knob.style.transform=`translate(${dx}px,${dy}px)`;
+ let dx=e.clientX-cx,dy=e.clientY-cy;
+ const max=Math.max(20,(Math.min(r.width,r.height)-54)/2),len=Math.hypot(dx,dy)||1,scale=Math.min(1,max/len);
+ dx*=scale;dy*=scale;stickX=dx/max;stickY=dy/max;
+ knob.style.transform=`translate(${dx}px,${dy}px)`;
 }
-function resetStick(){stickId=null;touchStickActive=false;stickX=0;stickY=0;knob.style.transform='translate(0,0)'}
-stick.addEventListener('pointerdown',e=>{e.preventDefault();if(stickId!==null)return;stickId=e.pointerId;touchStickActive=true;try{stick.setPointerCapture(stickId)}catch(_){}moveStick(e)},{passive:false});
-stick.addEventListener('pointermove',e=>{if(e.pointerId===stickId)moveStick(e)});
-['pointerup','pointercancel','lostpointercapture'].forEach(t=>stick.addEventListener(t,e=>{if(stickId===e.pointerId)resetStick()}));
-// Teclado para Surface/Windows y ordenadores.
-addEventListener('keydown',e=>{const k=e.key.toLowerCase();if(['arrowleft','arrowright',' ','arrowup','arrowdown'].includes(k))e.preventDefault();if(k==='arrowleft'||k==='a')keys.left=true;if(k==='arrowright'||k==='d')keys.right=true;if(k==='arrowup'||k==='w')keys.up=true;if(k==='arrowdown'||k==='s')keys.down=true;if(k===' ')keys.jump=true;if(k==='v')keys.fly=true;if(k==='j')keys.hit=true;if(k==='k')keys.heat=true;if(k==='e')keys.rescue=true;if(k==='shift')keys.dash=true;});
-addEventListener('keyup',e=>{const k=e.key.toLowerCase();if(k==='arrowleft'||k==='a')keys.left=false;if(k==='arrowright'||k==='d')keys.right=false;if(k==='arrowup'||k==='w')keys.up=false;if(k==='arrowdown'||k==='s')keys.down=false;if(k==='v')keys.fly=false;if(k==='j')keys.hit=false;if(k==='k')keys.heat=false;if(k==='e')keys.rescue=false;if(k==='shift')keys.dash=false;});
-// Gamepad independiente: nunca sobrescribe los ejes del joystick táctil.
+stick.addEventListener('pointerdown',e=>{
+ e.preventDefault();
+ if(stickId!==null)return;
+ stickId=e.pointerId;touchStickActive=true;
+ try{stick.setPointerCapture(stickId)}catch(_){}
+ moveStick(e);
+},{passive:false});
+stick.addEventListener('pointermove',e=>{if(e.pointerId===stickId)moveStick(e)},{passive:false});
+function resetStick(e){
+ if(e&&stickId!==null&&e.pointerId!==stickId)return;
+ stickId=null;stickX=0;stickY=0;touchStickActive=false;knob.style.transform='translate(0,0)';
+}
+stick.addEventListener('pointerup',resetStick);
+stick.addEventListener('pointercancel',resetStick);
+stick.addEventListener('lostpointercapture',resetStick);
+addEventListener('keydown',e=>{
+ if(['ArrowLeft','ArrowRight',' ','ArrowUp','ArrowDown'].includes(e.key))e.preventDefault();
+ if(e.key==='ArrowLeft'||e.key.toLowerCase()==='a')keys.left=true;
+ if(e.key==='ArrowRight'||e.key.toLowerCase()==='d')keys.right=true;
+ if(e.key==='ArrowUp'||e.key.toLowerCase()==='w')keys.up=true;
+ if(e.key==='ArrowDown'||e.key.toLowerCase()==='s')keys.down=true;
+ if(e.key===' ')keys.jump=true;
+ if(e.key.toLowerCase()==='v')keys.fly=true;
+ if(e.key.toLowerCase()==='j')keys.hit=true;
+ if(e.key.toLowerCase()==='k')keys.heat=true;
+ if(e.key.toLowerCase()==='e')keys.rescue=true;
+ if(e.key==='Shift')keys.dash=true;
+});
+addEventListener('keyup',e=>{
+ if(e.key==='ArrowLeft'||e.key.toLowerCase()==='a')keys.left=false;
+ if(e.key==='ArrowRight'||e.key.toLowerCase()==='d')keys.right=false;
+ if(e.key==='ArrowUp'||e.key.toLowerCase()==='w')keys.up=false;
+ if(e.key==='ArrowDown'||e.key.toLowerCase()==='s')keys.down=false;
+ if(e.key.toLowerCase()==='v')keys.fly=false;
+ if(e.key.toLowerCase()==='j')keys.hit=false;
+ if(e.key.toLowerCase()==='k')keys.heat=false;
+ if(e.key.toLowerCase()==='e')keys.rescue=false;
+ if(e.key==='Shift')keys.dash=false;
+});
 function gamepad(){
- const pads=navigator.getGamepads?.()||[];let pad=null;
- for(const candidate of pads){if(candidate){pad=candidate;break}}
- if(!pad){padX=0;padY=0;Object.keys(gp).forEach(k=>gp[k]=false);return;}
- const ax=pad.axes?.[0]||0,ay=pad.axes?.[1]||0;
- padX=Math.abs(ax)>.2?ax:0;padY=Math.abs(ay)>.2?ay:0;
- gp.jump=!!pad.buttons?.[0]?.pressed;gp.fly=!!pad.buttons?.[1]?.pressed;
- gp.hit=!!pad.buttons?.[2]?.pressed;gp.heat=!!pad.buttons?.[3]?.pressed;
- gp.rescue=!!pad.buttons?.[4]?.pressed;gp.dash=!!pad.buttons?.[5]?.pressed;
+ const pads=navigator.getGamepads?.()||[];
+ let activePad=null;
+ for(const candidate of pads){if(candidate){activePad=candidate;break}}
+ if(activePad){
+  const dead=v=>Math.abs(v)>.18?v:0;
+  padX=dead(activePad.axes?.[0]||0);padY=dead(activePad.axes?.[1]||0);
+  gp.jump=!!activePad.buttons?.[0]?.pressed;
+  gp.fly=!!activePad.buttons?.[1]?.pressed;
+  gp.hit=!!activePad.buttons?.[2]?.pressed;
+  gp.heat=!!activePad.buttons?.[3]?.pressed;
+  gp.rescue=!!activePad.buttons?.[4]?.pressed;
+  gp.dash=!!activePad.buttons?.[5]?.pressed;
+ }else{
+  padX=0;padY=0;Object.keys(gp).forEach(k=>gp[k]=false);
+ }
 }
 setInterval(()=>{if(started&&!paused)gamepad()},50);
-function togglePause(force){if(!started||won)return;paused=typeof force==='boolean'?force:!paused;document.getElementById('pauseLayer').style.display=paused?'flex':'none';document.getElementById('pause').textContent=paused?'▶ SEGUIR':'Ⅱ PAUSA';if(paused){Object.keys(keys).forEach(k=>keys[k]=false);Object.keys(gp).forEach(k=>gp[k]=false);stickX=0;stickY=0;touchStickActive=false;padX=0;padY=0;resetStick()}}
+addEventListener('blur',()=>{
+ Object.keys(keys).forEach(k=>keys[k]=false);
+ resetStick();document.querySelectorAll('.ctrl.active').forEach(el=>el.classList.remove('active'));
+});
+function togglePause(force){if(!started||won)return;paused=typeof force==='boolean'?force:!paused;document.getElementById('pauseLayer').style.display=paused?'flex':'none';document.getElementById('pause').textContent=paused?'▶ SEGUIR':'Ⅱ PAUSA';if(paused){Object.keys(keys).forEach(k=>keys[k]=false);Object.keys(gp).forEach(k=>gp[k]=false);padX=0;padY=0;resetStick()}}
 document.getElementById('pause').addEventListener('click',()=>togglePause());
 document.getElementById('resume').addEventListener('click',()=>togglePause(false));
 document.getElementById('restart').addEventListener('click',()=>location.reload());
