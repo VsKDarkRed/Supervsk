@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>SUPERVSK · El despertar V42</title>
+<title>SUPERVSK · El despertar V44</title>
 <style>
 :root{color-scheme:dark;font-family:system-ui,-apple-system,Segoe UI,Arial,sans-serif} body{background:#071326} #game{background:linear-gradient(#102c50,#f2a66d)}
 *{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;min-height:100%;overflow:hidden;background:#07152d;touch-action:none;overscroll-behavior:none}
@@ -19,7 +19,7 @@ canvas{display:block;position:absolute;inset:0;width:100%;height:100%;image-rend
 #hud>.pill:first-child{flex:0 1 38%}
 #hud>#status{flex:1 1 62%;justify-content:flex-start}
 #help{position:absolute;top:76px;left:14px;color:#fff;font-size:11px;line-height:1.3;opacity:.95;pointer-events:none;z-index:2;text-shadow:1px 1px 2px #001}
-#missionCard{position:absolute;z-index:2;top:104px;left:14px;max-width:min(310px,58vw);padding:7px 10px;background:#071a36eF;border:1px solid #8bd4ff;border-left:4px solid #ffcf65;color:#fff;font-size:11px;font-weight:900;letter-spacing:.03em;text-shadow:1px 1px #001;box-shadow:2px 2px 0 #020b19;pointer-events:none}
+#missionCard{position:absolute;z-index:4;top:72px;left:14px;max-width:min(310px,58vw);padding:7px 10px;background:#071a36eF;border:1px solid #8bd4ff;border-left:4px solid #ffcf65;color:#fff;font-size:11px;font-weight:900;letter-spacing:.03em;text-shadow:1px 1px #001;box-shadow:2px 2px 0 #020b19;pointer-events:none}
 #controls{position:absolute;inset:auto 0 max(14px,env(safe-area-inset-bottom)) 0;display:flex;justify-content:space-between;align-items:end;padding:0 clamp(14px,3vw,30px);gap:clamp(12px,3vw,28px);pointer-events:none}
 .cluster{display:flex;align-items:end;pointer-events:auto}
 .action-grid{display:grid;grid-template-columns:repeat(3,minmax(62px,76px));grid-template-rows:repeat(2,64px);gap:10px;align-items:stretch}
@@ -78,15 +78,21 @@ h1{margin:0;color:#fff;font-size:clamp(32px,8vw,56px);letter-spacing:.08em;text-
  .ctrl{min-height:46px;min-width:54px;font-size:9px}
  #help{top:52px}
 }
+
+/* V44: clean HUD hierarchy; no help strip over the playfield */
+#help{display:none!important}
+#hud{z-index:5}
+#missionCard{position:absolute!important;z-index:4!important;top:72px!important;left:14px!important;right:auto!important;width:max-content!important;max-width:min(430px,calc(100vw - 28px))!important;box-sizing:border-box!important;padding:7px 11px!important;background:rgba(5,19,42,.96)!important;border:2px solid #8bd4ff!important;border-left:5px solid #ffcf65!important;color:#fff!important;font:900 11px/1.25 system-ui!important;white-space:normal!important;overflow-wrap:anywhere!important;text-shadow:1px 1px 2px #001!important;box-shadow:2px 3px 0 #020b19!important;pointer-events:none!important}
+@media(max-height:430px) and (orientation:landscape){#missionCard{top:52px!important;left:9px!important;max-width:min(380px,calc(100vw - 18px))!important;font-size:9px!important;padding:5px 8px!important}}
+@media(orientation:portrait){#missionCard{top:62px!important;left:8px!important;max-width:calc(100vw - 16px)!important;font-size:10px!important}}
 </style>
 </head>
 <body>
 <div id="game">
 <canvas id="c"></canvas>
-<div id="hud"><div class="pill">SUPERVSK · V40</div><div class="pill" id="status">ENERGÍA 100 · VUELO LISTO</div></div>
+<div id="hud"><div class="pill">SUPERVSK · V44</div><div class="pill" id="status">ENERGÍA 100 · VUELO LISTO</div></div>
 <button id="pause" aria-label="Pausar">Ⅱ PAUSA</button>
 <button id="fullscreen" aria-label="Activar pantalla completa">⛶ PANTALLA</button>
-<div id="help">Mover: joystick / A-D · Volar: mantener VUELO + joystick · Saltar · Puñetazo · Rayo · Impulso · Rescate</div>
 <div id="missionCard" aria-live="polite">MISIÓN 1 · Recupera los 11 núcleos</div>
 <div id="controls">
   <div class="cluster"><div id="stick"><div id="knob"></div></div></div>
@@ -101,10 +107,10 @@ h1{margin:0;color:#fff;font-size:clamp(32px,8vw,56px);letter-spacing:.08em;text-
 </div>
 <div id="overlay"><div class="panel">
 <h1>SUPERVSK</h1>
-<p>CAMPAÑA · CRISIS DE METRÓPOLIS · V40</p>
+<p>CAMPAÑA · CRISIS DE METRÓPOLIS · V44</p>
 <p>Arte renovado: héroe pixel-art animado, capas de profundidad, fábrica con hornos y grúas, fortaleza de hielo, nieve dinámica, enemigos con siluetas y efectos pixelados.</p>
 <button id="start">COMENZAR PARTIDA</button>
-<p class="small">V40 · Pixel-art 32 bits · controles táctiles ampliados · iPhone / iPad · Surface / Windows</p>
+<p class="small">V44 · Pixel-art 32 bits · controles táctiles ampliados · iPhone / iPad · Surface / Windows</p>
 </div></div>
 <div id="pauseLayer"><div class="panel"><h1>PAUSA</h1><p>La ciudad espera. Tómate un respiro.</p><button id="resume">CONTINUAR</button><button class="secondary" id="restart">REINICIAR</button></div></div>
 </div>
@@ -390,9 +396,9 @@ function drawHero(){
  // Pixel shadow and cape silhouette.
  ctx.fillStyle='#07132388';ctx.fillRect(-17,27,34,5);
  const capeWave=Math.round(Math.sin(frame*.22)*3);
- ctx.fillStyle='#54152f';ctx.fillRect(-14,-18,9,31);
+ ctx.fillStyle='#35142f';ctx.fillRect(-16,-19,12,34);ctx.fillStyle='#54152f';ctx.fillRect(-14,-18,9,31);
  ctx.fillStyle='#b51f43';ctx.fillRect(-17,-16,10,27+capeWave);
- ctx.fillStyle='#f35b68';ctx.fillRect(-14,-17,5,19);
+ ctx.fillStyle='#f35b68';ctx.fillRect(-14,-17,5,19);ctx.fillStyle='#ff9b91';ctx.fillRect(-17,5+capeWave,3,7);
  ctx.fillStyle='#7b1836';ctx.fillRect(-17,8+capeWave,7,7);
  // Boots and legs, animated in two clear poses.
  const legA=Math.round(running*2),legB=-legA;
@@ -404,13 +410,13 @@ function drawHero(){
  ctx.fillStyle='#061b42';ctx.fillRect(-13,-19,26,27);
  ctx.fillStyle='#0753a5';ctx.fillRect(-11,-20,22,25);
  ctx.fillStyle='#1688ed';ctx.fillRect(-9,-20,13,21);
- ctx.fillStyle='#63caff';ctx.fillRect(-9,-19,5,10);
+ ctx.fillStyle='#63caff';ctx.fillRect(-9,-19,5,10);ctx.fillStyle='#b7efff';ctx.fillRect(-8,-8,3,8);
  ctx.fillStyle='#063777';ctx.fillRect(4,-16,6,18);
  ctx.fillStyle='#9eeaff';ctx.fillRect(-13,-18,4,6);ctx.fillRect(9,-18,4,6);
  // Iconic chest shield, designed as a pixel emblem.
  ctx.fillStyle='#f8d65d';ctx.fillRect(-6,-15,13,12);
  ctx.fillStyle='#a51f37';ctx.fillRect(-4,-13,9,8);
- ctx.fillStyle='#fff0a1';ctx.fillRect(-4,-14,3,2);
+ ctx.fillStyle='#fff0a1';ctx.fillRect(-4,-14,3,2);ctx.fillStyle='#ffefbd';ctx.fillRect(3,-13,2,2);
  ctx.fillStyle='#f9d65d';ctx.fillRect(-2,-12,2,5);ctx.fillRect(1,-10,3,3);
  // Arms and gloves.
  ctx.fillStyle='#09295d';ctx.fillRect(-16,-17,5,17);ctx.fillRect(11,-17,5,17);
@@ -433,12 +439,51 @@ function drawHero(){
  ctx.restore();
 }
 
+
+function drawGroundDetail(){
+ const chapter=hero.x<2300?1:(hero.x<4600?2:3);
+ const top=ground;
+ ctx.save();
+ // Ground side face and top rim.
+ const base=ctx.createLinearGradient(0,top,0,H);
+ if(chapter===2){base.addColorStop(0,'#5a493d');base.addColorStop(.18,'#283747');base.addColorStop(1,'#111c2a');}
+ else if(chapter===3){base.addColorStop(0,'#a8e8f4');base.addColorStop(.16,'#477c9b');base.addColorStop(1,'#142b47');}
+ else{base.addColorStop(0,'#526a7c');base.addColorStop(.16,'#25394e');base.addColorStop(1,'#101e32');}
+ ctx.fillStyle=base;ctx.fillRect(0,top,W,H-top);
+ ctx.fillStyle=chapter===3?'#e8ffff':'#a8d9ed';ctx.fillRect(0,top,W,3);
+ // Repeating floor plates with bolts and surface markings.
+ const shift=-(cam%96);
+ for(let x=shift-96;x<W+96;x+=96){
+  ctx.fillStyle=chapter===2?'#344252':(chapter===3?'#6ba9c1':'#304b61');
+  ctx.fillRect(x,top+9,92,Math.max(12,H-top-9));
+  ctx.fillStyle=chapter===2?'#b77a48':(chapter===3?'#c7f5ff':'#83b7cf');
+  ctx.fillRect(x+3,top+9,86,2);
+  ctx.fillStyle='#08172899';
+  ctx.fillRect(x+8,top+19,1,Math.max(8,H-top-25));
+  ctx.fillRect(x+87,top+19,1,Math.max(8,H-top-25));
+  ctx.fillStyle='#d8efff99';
+  for(let q=0;q<3;q++){ctx.fillRect(x+10+q*34,top+15,3,3);ctx.fillRect(x+10+q*34,top+30,2,2)}
+  if(chapter===2){
+   ctx.fillStyle='#ff9b45';ctx.fillRect(x+28,top+42,27,3);ctx.fillStyle='#ffe0a0';ctx.fillRect(x+31,top+42,7,3);
+  }else if(chapter===3){
+   ctx.fillStyle='#b9f5ff88';ctx.fillRect(x+20,top+45,42,2);
+  }else{
+   ctx.fillStyle='#d5b17a66';ctx.fillRect(x+25,top+48,32,2);
+  }
+ }
+ // Near-field perspective streaks.
+ ctx.globalAlpha=.25;ctx.strokeStyle=chapter===3?'#e6ffff':'#a8c5d8';ctx.lineWidth=1;
+ for(let i=0;i<9;i++){const x=((i*137-cam*.95)%(W+80)+W+80)%(W+80)-40;ctx.beginPath();ctx.moveTo(x,top+5);ctx.lineTo(x-18,H);ctx.stroke()}
+ ctx.restore();
+}
+
 function draw(){
  ctx.clearRect(0,0,W,H);
  ctx.save();
  if(shake>.4)ctx.translate((Math.random()-.5)*shake,(Math.random()-.5)*shake);
  drawCity();
  drawChapterAtmosphere();
+ drawGroundDetail();
  // platforms
  platforms.forEach(p=>{let x=p.x-cam;if(x>-200&&x<W+200){
  const pg=ctx.createLinearGradient(x,p.y,x,p.y+20);pg.addColorStop(0,'#a9c7d6');pg.addColorStop(.22,'#4e718d');pg.addColorStop(1,'#172f4a');
@@ -462,6 +507,11 @@ function draw(){
  else if((f.type||0)===2){ctx.beginPath();ctx.moveTo(x+15,y-5);ctx.lineTo(x+32,y+12);ctx.lineTo(x+27,y+35);ctx.lineTo(x+3,y+35);ctx.lineTo(x-2,y+12);ctx.closePath();ctx.fill();ctx.fillStyle='#8ff3ff';ctx.fillRect(x+5,y+10,7,4);ctx.fillRect(x+19,y+10,7,4);}
  else {ctx.beginPath();ctx.roundRect(x,y,30,35,7);ctx.fill();ctx.fillStyle='#202c40';ctx.fillRect(x+4,y+26,7,10);ctx.fillRect(x+19,y+26,7,10);ctx.fillStyle='#ff5362';ctx.fillRect(x+5,y+9,7,4);ctx.fillRect(x+19,y+9,7,4);}
  ctx.shadowColor=pal[0];ctx.shadowBlur=8;ctx.strokeStyle='#dcecf5';ctx.lineWidth=1;ctx.strokeRect(x+3,y+3,24,28);ctx.shadowBlur=0;
+ ctx.fillStyle='#d7f4ff';ctx.fillRect(x+7,y+3,4,3);ctx.fillRect(x+19,y+3,4,3);
+ ctx.fillStyle='#101c2d';ctx.fillRect(x+7,y+20,4,5);ctx.fillRect(x+19,y+20,4,5);
+ ctx.fillStyle=(f.type||0)===1?'#ffdb8a':((f.type||0)===2?'#b8fbff':'#ff9aa4');
+ ctx.fillRect(x+8,y+10+Math.round(Math.sin(frame*.16+f.x)*1),4,2);ctx.fillRect(x+19,y+10+Math.round(Math.sin(frame*.16+f.x)*1),4,2);
+ ctx.fillStyle='#d8e9f4';ctx.fillRect(x+12,y+27,6,3);
  }});
  // Communication relays: optional-looking mission targets, required to expose the Sentinel.
  relays.forEach(r=>{if(r.alive){const x=r.x-cam,y=r.y;ctx.save();
@@ -492,8 +542,12 @@ function draw(){
  const bp=bossPalettes[Math.max(0,bossPhase-1)];const armor=ctx.createLinearGradient(bx,by,bx+80,by+120);armor.addColorStop(0,bp[0]);armor.addColorStop(.22,bp[1]);armor.addColorStop(.55,bp[2]);armor.addColorStop(1,'#071326');
  ctx.fillStyle=armor;ctx.beginPath();ctx.moveTo(bx+20,by+8);ctx.lineTo(bx+60,by+8);ctx.lineTo(bx+78,by+48);ctx.lineTo(bx+68,by+106);ctx.lineTo(bx+12,by+106);ctx.lineTo(bx+2,by+48);ctx.closePath();ctx.fill();
  ctx.fillStyle='#1c3049';ctx.beginPath();ctx.roundRect(bx+13,by+22,54,30,8);ctx.fill();
+ ctx.fillStyle=bp[0];ctx.fillRect(bx+1,by+43,17,19);ctx.fillRect(bx+62,by+43,17,19);
+ ctx.fillStyle=bp[1];ctx.fillRect(bx+5,by+47,9,8);ctx.fillRect(bx+66,by+47,9,8);
  ctx.fillStyle=bossPhase===1?'#ff4b58':(bossPhase===2?'#ff9b38':'#8cf5ff');ctx.shadowBlur=18;ctx.fillRect(bx+22,by+33,13,7);ctx.fillRect(bx+45,by+33,13,7);
  ctx.shadowBlur=0;ctx.fillStyle='#9eb7c9';ctx.fillRect(bx+26,by+57,27,7);
+ ctx.fillStyle=bossPhase===1?'#ffdd78':(bossPhase===2?'#ff9b43':'#8df7ff');
+ ctx.shadowColor=ctx.fillStyle;ctx.shadowBlur=14;ctx.fillRect(bx+34,by+68,13,15);ctx.shadowBlur=0;
  ctx.fillStyle='#1b2a40';ctx.fillRect(bx+17,by+104,17,14);ctx.fillRect(bx+48,by+104,17,14);
  ctx.strokeStyle='#d6f2ff';ctx.lineWidth=2;ctx.stroke();
  ctx.fillStyle='#251b2d';ctx.fillRect(bx,by-14,80,7);ctx.fillStyle=bossPhase===1?'#ff5965':(bossPhase===2?'#ff9b38':'#75edff');ctx.fillRect(bx,by-14,80*bossHealth/8,7);ctx.fillStyle='#fff';ctx.font='bold 10px Arial';ctx.fillText(`JEFE ${bossPhase}/3`,bx,by-20);
@@ -505,6 +559,7 @@ function draw(){
  if(punchTimer>0){
    const px=hero.x-cam+hero.facing*42,py=hero.y+28;
    ctx.save();ctx.globalAlpha=Math.min(1,punchTimer/5);ctx.translate(px,py);ctx.scale(hero.facing,1);
+   ctx.fillStyle='#ffffff66';ctx.fillRect(-13,-13,26,26);
    ctx.strokeStyle='#e9faff';ctx.lineWidth=7;ctx.shadowColor='#65dfff';ctx.shadowBlur=18;
    ctx.beginPath();ctx.arc(0,0,27,-1.05,1.05);ctx.stroke();
    ctx.strokeStyle='#ffdf9b';ctx.lineWidth=3;ctx.beginPath();ctx.arc(0,0,36,-.85,.85);ctx.stroke();ctx.restore();
