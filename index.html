@@ -68,10 +68,10 @@ canvas{display:block;position:absolute;inset:0;width:100%;height:100%;image-rend
 </div>
 <div id="overlay"><div class="panel">
 <h1>SUPERVSK</h1>
-<p>CAPÍTULO 1 · LA AMENAZA SOBRE METRÓPOLIS · V32</p>
-<p>V32 se centra exclusivamente en los controles táctiles: botones más claros, distribución adaptable y pulsaciones simultáneas más fiables. Rescata civiles y derrota al centinela.</p>
+<p>CAPÍTULO 1 · LA AMENAZA SOBRE METRÓPOLIS · V34</p>
+<p>V34 corrige el fallo que anulaba el joystick táctil al consultar el mando. Separa joystick táctil y mando físico y corrige la lectura de los botones del gamepad.</p>
 <button id="start">COMENZAR PARTIDA</button>
-<p class="small">V32 · Ajustes exclusivos de controles · iPhone / iPad · Surface / Windows · teclado, táctil y mando</p>
+<p class="small">V34 · Corrección de entrada táctil y mando · iPhone / iPad · Surface / Windows · teclado, táctil y mando</p>
 </div></div>
 <div id="pauseLayer"><div class="panel"><h1>PAUSA</h1><p>La ciudad espera. Tómate un respiro.</p><button id="resume">CONTINUAR</button><button class="secondary" id="restart">REINICIAR</button></div></div>
 </div>
@@ -95,7 +95,7 @@ let punchTimer=0,punchCooldown=0,heatTimer=0,heatCooldown=0,heatHitSet=new Set()
 const bossShots=[];
 const civilians=[{x:1080,y:ground-48,rescued:false},{x:1980,y:ground-48,rescued:false},{x:2860,y:ground-48,rescued:false}];
 let message="Rescata los 7 núcleos y encuentra al centinela";
-let stickX=0,stickY=0;
+let stickX=0,stickY=0,touchStickActive=false,padX=0,padY=0;
 const hero={x:90,y:ground-58,vx:0,vy:0,w:34,h:58,onGround:true,facing:1,inv:0};
 const pickups=[520,900,1320,1780,2250,2790,3240].map((x,i)=>({x,y:ground-90-(i%2)*65,baseOffset:90+(i%2)*65,taken:false}));
 const foes=[760,1480,2110,2900,3650].map((x,i)=>({x,y:ground-38,alive:true,dir:i%2?1:-1,origin:x,range:90+i%3*20,speed:0.65+i%2*.18}));
@@ -406,7 +406,7 @@ function update(){
  const flying=(keys.fly||gp.fly)&&energy>0;
  // Movimiento con aceleración, inercia y frenada progresiva: evita el desplazamiento brusco.
  let ax=(keys.right?1:0)-(keys.left?1:0);
- if(Math.abs(stickX)>.10)ax=stickX;
+ if(touchStickActive)ax=stickX;else if(Math.abs(padX)>.10)ax=padX;
  const maxSpeed=flying?5.4:4.25;
  const acceleration=flying?.34:(hero.onGround?.62:.30);
  if(ax!==0){
@@ -429,7 +429,7 @@ function update(){
  }
  if(flying){
    let vertical=(keys.up?-1:0)+(keys.down?1:0);
-   if(Math.abs(stickY)>.16)vertical=stickY;
+   if(touchStickActive)vertical=stickY;else if(Math.abs(padY)>.16)vertical=padY;
    hero.vy+=(vertical*.48-hero.vy*.105);
    hero.vy=Math.max(-5.8,Math.min(5.8,hero.vy));
    energy=Math.max(0,energy-.04);
@@ -496,33 +496,53 @@ function loop(now){
 requestAnimationFrame(loop);
 document.getElementById('start').addEventListener('click',()=>{started=true;overlay.style.display='none'});
 const heldPointers=new Map();
+const pointerActions=new Map();
 function bindHold(id,k){
  const el=document.getElementById(id);
- const release=e=>{
-   const set=heldPointers.get(k);
-   if(set){set.delete(e.pointerId);if(set.size===0){heldPointers.delete(k);keys[k]=false;el.classList.remove('active')}}
- };
  el.addEventListener('pointerdown',e=>{
    e.preventDefault();
    if(!heldPointers.has(k))heldPointers.set(k,new Set());
-   heldPointers.get(k).add(e.pointerId);
+   heldPointers.get(k).add(e.pointerId);pointerActions.set(e.pointerId,k);
    keys[k]=true;el.classList.add('active');
    try{el.setPointerCapture(e.pointerId)}catch(_){}
  });
- ['pointerup','pointercancel','lostpointercapture'].forEach(t=>el.addEventListener(t,release));
 }
+function releasePointer(e){
+ const k=pointerActions.get(e.pointerId);if(!k)return;
+ pointerActions.delete(e.pointerId);
+ const set=heldPointers.get(k);if(set){set.delete(e.pointerId);if(set.size===0){heldPointers.delete(k);keys[k]=false;document.getElementById(k).classList.remove('active')}}
+}
+window.addEventListener('pointerup',releasePointer);
+window.addEventListener('pointercancel',releasePointer);
 bindHold('jump','jump');bindHold('fly','fly');bindHold('hit','hit');bindHold('heat','heat');bindHold('dash','dash');bindHold('rescue','rescue');
 const stick=document.getElementById('stick'),knob=document.getElementById('knob');let stickId=null;
 function moveStick(e){let r=stick.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2,dx=e.clientX-cx,dy=e.clientY-cy,max=Math.max(20,Math.min(r.width*.34,46)),len=Math.hypot(dx,dy)||1,scale=Math.min(1,max/len);dx*=scale;dy*=scale;stickX=dx/max;stickY=dy/max;knob.style.transform=`translate(${dx}px,${dy}px)`}
-stick.addEventListener('pointerdown',e=>{e.preventDefault();stickId=e.pointerId;try{stick.setPointerCapture(stickId)}catch(_){}moveStick(e)});
-stick.addEventListener('pointermove',e=>{if(e.pointerId===stickId){e.preventDefault();moveStick(e)}});
-function resetStick(){stickId=null;stickX=0;stickY=0;knob.style.transform='translate(0,0)'}
-stick.addEventListener('pointerup',resetStick);stick.addEventListener('pointercancel',resetStick);stick.addEventListener('lostpointercapture',resetStick);
+stick.addEventListener('pointerdown',e=>{e.preventDefault();touchStickActive=true;stickId=e.pointerId;try{stick.setPointerCapture(stickId)}catch(_){}moveStick(e)});
+window.addEventListener('pointermove',e=>{if(e.pointerId===stickId){e.preventDefault();moveStick(e)}},{passive:false});
+function resetStick(e){if(e&&e.pointerId!==stickId)return;stickId=null;touchStickActive=false;stickX=0;stickY=0;knob.style.transform='translate(0,0)'}
+window.addEventListener('pointerup',resetStick);window.addEventListener('pointercancel',resetStick);
 addEventListener('keydown',e=>{if(['ArrowLeft','ArrowRight',' ','ArrowUp','ArrowDown'].includes(e.key))e.preventDefault();if(e.key==='ArrowLeft'||e.key.toLowerCase()==='a')keys.left=true;if(e.key==='ArrowRight'||e.key.toLowerCase()==='d')keys.right=true;if(e.key==='ArrowUp'||e.key.toLowerCase()==='w')keys.up=true;if(e.key==='ArrowDown'||e.key.toLowerCase()==='s')keys.down=true;if(e.key===' ')keys.jump=true;if(e.key.toLowerCase()==='v')keys.fly=true;if(e.key.toLowerCase()==='j')keys.hit=true;if(e.key.toLowerCase()==='k')keys.heat=true;if(e.key.toLowerCase()==='e')keys.rescue=true;if(e.key==='Shift')keys.dash=true});
 addEventListener('keyup',e=>{if(e.key==='ArrowLeft'||e.key.toLowerCase()==='a')keys.left=false;if(e.key==='ArrowRight'||e.key.toLowerCase()==='d')keys.right=false;if(e.key==='ArrowUp'||e.key.toLowerCase()==='w')keys.up=false;if(e.key==='ArrowDown'||e.key.toLowerCase()==='s')keys.down=false;if(e.key.toLowerCase()==='v')keys.fly=false;if(e.key.toLowerCase()==='j')keys.hit=false;if(e.key.toLowerCase()==='k')keys.heat=false;if(e.key.toLowerCase()==='e')keys.rescue=false;if(e.key==='Shift')keys.dash=false});
-function gamepad(){const pads=navigator.getGamepads?.()||[];let found=false;for(const gp of pads){if(!gp)continue;found=true;const ax=gp.axes[0]||0,ay=gp.axes[1]||0;stickX=Math.abs(ax)>.2?ax:0;stickY=Math.abs(ay)>.2?ay:0;gp.jump=!!gp.buttons[0]?.pressed;gp.fly=!!gp.buttons[1]?.pressed;gp.hit=!!gp.buttons[2]?.pressed;gp.heat=!!gp.buttons[3]?.pressed;gp.rescue=!!gp.buttons[4]?.pressed;gp.dash=!!gp.buttons[5]?.pressed;break}if(!found){stickX=0;stickY=0;Object.keys(gp).forEach(k=>gp[k]=false)}}
+function gamepad(){
+ const pads=navigator.getGamepads?.()||[];
+ let pad=null;
+ for(const candidate of pads){if(candidate){pad=candidate;break}}
+ if(!pad){
+   padX=0;padY=0;
+   Object.keys(gp).forEach(k=>gp[k]=false);
+   return;
+ }
+ padX=Math.abs(pad.axes[0]||0)>.2?(pad.axes[0]||0):0;
+ padY=Math.abs(pad.axes[1]||0)>.2?(pad.axes[1]||0):0;
+ gp.jump=!!pad.buttons[0]?.pressed;
+ gp.fly=!!pad.buttons[1]?.pressed;
+ gp.hit=!!pad.buttons[2]?.pressed;
+ gp.heat=!!pad.buttons[3]?.pressed;
+ gp.rescue=!!pad.buttons[4]?.pressed;
+ gp.dash=!!pad.buttons[5]?.pressed;
+}
 setInterval(()=>{if(started&&!paused)gamepad()},50);
-function togglePause(force){if(!started||won)return;paused=typeof force==='boolean'?force:!paused;document.getElementById('pauseLayer').style.display=paused?'flex':'none';document.getElementById('pause').textContent=paused?'▶ SEGUIR':'Ⅱ PAUSA';if(paused){Object.keys(keys).forEach(k=>keys[k]=false);Object.keys(gp).forEach(k=>gp[k]=false);stickX=0;stickY=0}}
+function togglePause(force){if(!started||won)return;paused=typeof force==='boolean'?force:!paused;document.getElementById('pauseLayer').style.display=paused?'flex':'none';document.getElementById('pause').textContent=paused?'▶ SEGUIR':'Ⅱ PAUSA';if(paused){Object.keys(keys).forEach(k=>keys[k]=false);Object.keys(gp).forEach(k=>gp[k]=false);stickX=0;stickY=0;touchStickActive=false;padX=0;padY=0}}
 document.getElementById('pause').addEventListener('click',()=>togglePause());
 document.getElementById('resume').addEventListener('click',()=>togglePause(false));
 document.getElementById('restart').addEventListener('click',()=>location.reload());
