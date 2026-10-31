@@ -7,16 +7,19 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>SUPERVSK · El despertar V36</title>
+<title>SUPERVSK · El despertar V42</title>
 <style>
 :root{color-scheme:dark;font-family:system-ui,-apple-system,Segoe UI,Arial,sans-serif} body{background:#071326} #game{background:linear-gradient(#102c50,#f2a66d)}
 *{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;min-height:100%;overflow:hidden;background:#07152d;touch-action:none;overscroll-behavior:none}
 body{display:flex;align-items:center;justify-content:center}
 #game{position:fixed;inset:0;width:100%;height:100%;height:100dvh;min-height:100svh;background:#07152d;overflow:hidden;isolation:isolate}
-canvas{display:block;position:absolute;inset:0;width:100%;height:100%;image-rendering:auto;touch-action:none}
-#hud{position:absolute;inset:env(safe-area-inset-top) 0 auto 0;display:flex;justify-content:space-between;align-items:flex-start;padding:12px 14px;pointer-events:none;text-shadow:0 2px 4px #001}
-.pill{background:linear-gradient(135deg,#06152de8,#102c4be0);border:1px solid #9edbff66;border-radius:12px;padding:8px 12px;font-size:12px;letter-spacing:.08em;box-shadow:0 6px 22px #001a35aa;backdrop-filter:blur(8px)}
-#help{position:absolute;top:58px;left:14px;color:#dcecff;font-size:11px;opacity:.85;pointer-events:none}
+canvas{display:block;position:absolute;inset:0;width:100%;height:100%;image-rendering:pixelated;touch-action:none;contain:strict}
+#hud{position:absolute;inset:env(safe-area-inset-top) 0 auto 0;display:flex;justify-content:space-between;align-items:stretch;gap:10px;padding:12px 14px;pointer-events:none;text-shadow:0 2px 4px #001;color:#fff;z-index:2}
+.pill{box-sizing:border-box;min-width:0;color:#fff;background:linear-gradient(180deg,#102e58f5,#071a36f5);border:2px solid #8bd4ff;border-radius:4px;padding:8px 12px;font-size:12px;line-height:1.25;letter-spacing:.06em;box-shadow:3px 3px 0 #020b19,0 0 0 2px #102746;backdrop-filter:none;text-shadow:1px 1px #06152d;display:flex;align-items:center}
+#hud>.pill:first-child{flex:0 1 38%}
+#hud>#status{flex:1 1 62%;justify-content:flex-start}
+#help{position:absolute;top:76px;left:14px;color:#fff;font-size:11px;line-height:1.3;opacity:.95;pointer-events:none;z-index:2;text-shadow:1px 1px 2px #001}
+#missionCard{position:absolute;z-index:2;top:104px;left:14px;max-width:min(310px,58vw);padding:7px 10px;background:#071a36eF;border:1px solid #8bd4ff;border-left:4px solid #ffcf65;color:#fff;font-size:11px;font-weight:900;letter-spacing:.03em;text-shadow:1px 1px #001;box-shadow:2px 2px 0 #020b19;pointer-events:none}
 #controls{position:absolute;inset:auto 0 max(14px,env(safe-area-inset-bottom)) 0;display:flex;justify-content:space-between;align-items:end;padding:0 clamp(14px,3vw,30px);gap:clamp(12px,3vw,28px);pointer-events:none}
 .cluster{display:flex;align-items:end;pointer-events:auto}
 .action-grid{display:grid;grid-template-columns:repeat(3,minmax(62px,76px));grid-template-rows:repeat(2,64px);gap:10px;align-items:stretch}
@@ -28,8 +31,8 @@ canvas{display:block;position:absolute;inset:0;width:100%;height:100%;image-rend
 #knob{width:54px;height:54px;position:absolute;left:37px;top:37px;border-radius:50%;background:linear-gradient(145deg,#e5f7ff,#79b8ed);border:3px solid white;box-shadow:0 3px 12px #000b,inset 0 2px 5px #fff;pointer-events:none}
 #stick::after{content:"";position:absolute;inset:18%;border:1px dashed #d9edff44;border-radius:50%;pointer-events:none}
 #overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(#06152dcc,#07152dee);padding:22px}
-.panel{max-width:480px;text-align:center;background:#0b2040ed;border:1px solid #74b8ff66;border-radius:22px;padding:25px;box-shadow:0 15px 50px #0009}
-h1{margin:0;color:#fff;font-size:clamp(32px,8vw,56px);letter-spacing:.08em;text-shadow:3px 3px #b32939}
+.panel{max-width:480px;text-align:center;background:#10294a;border:3px solid #8bd4ff;border-radius:5px;padding:25px;box-shadow:6px 6px 0 #020b19,0 0 0 3px #244a70}
+h1{margin:0;color:#fff;font-size:clamp(32px,8vw,56px);letter-spacing:.08em;text-shadow:3px 3px 0 #b32939,5px 5px 0 #06152d}
 .panel p{color:#d5e8ff;line-height:1.5}
 #start{border:0;border-radius:12px;background:#e33b4b;color:white;font-weight:900;padding:14px 25px;font-size:16px}
 .small{font-size:11px;color:#a9c8ec!important}
@@ -48,7 +51,10 @@ h1{margin:0;color:#fff;font-size:clamp(32px,8vw,56px);letter-spacing:.08em;text-
  .ctrl{min-width:54px;min-height:54px;font-size:10px;border-radius:17px}
 }
 @media (orientation:portrait){
- #help{top:60px;max-width:58vw;line-height:1.35}
+ #hud{gap:6px;padding:8px}
+ .pill{font-size:10px;padding:7px 8px;letter-spacing:.03em}
+ #help{top:58px;max-width:58vw;line-height:1.35}
+ #missionCard{top:88px;max-width:58vw;font-size:10px;padding:6px 8px}
  #controls{padding:0 10px;gap:8px}
  #stick{width:96px;height:96px;flex-basis:96px}
  #knob{width:42px;height:42px;left:25px;top:25px}
@@ -57,22 +63,31 @@ h1{margin:0;color:#fff;font-size:clamp(32px,8vw,56px);letter-spacing:.08em;text-
  #fullscreen{top:103px}
 }
 @media (max-height:430px) and (orientation:landscape){
+ #hud{padding:6px 8px;gap:6px;align-items:center}
+ #hud>.pill:first-child{flex:0 0 34%}
+ #hud>#status{flex:1 1 66%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+ .pill{font-size:10px;line-height:1.15;padding:6px 8px;letter-spacing:.025em;white-space:nowrap}
+ #help{display:none}
+ #missionCard{top:48px;left:8px;max-width:58vw;font-size:9px;padding:5px 7px}
+ #hud>.pill:first-child{flex-basis:32%}
+ .pill{font-size:9px;padding:5px 6px}
  #controls{bottom:6px;padding:0 12px}
  #stick{width:92px;height:92px;flex-basis:92px}
  #knob{width:42px;height:42px;left:23px;top:23px}
  .action-grid{grid-template-rows:repeat(2,48px);grid-template-columns:repeat(3,minmax(54px,68px));gap:6px}
  .ctrl{min-height:46px;min-width:54px;font-size:9px}
  #help{top:52px}
-}.ctrl{width:46px;height:46px}#stick{width:88px;height:88px}#knob{left:22px;top:22px}#help{top:52px}}
+}
 </style>
 </head>
 <body>
 <div id="game">
 <canvas id="c"></canvas>
-<div id="hud"><div class="pill">SUPERVSK · V36</div><div class="pill" id="status">ENERGÍA 100 · VUELO LISTO</div></div>
+<div id="hud"><div class="pill">SUPERVSK · V40</div><div class="pill" id="status">ENERGÍA 100 · VUELO LISTO</div></div>
 <button id="pause" aria-label="Pausar">Ⅱ PAUSA</button>
 <button id="fullscreen" aria-label="Activar pantalla completa">⛶ PANTALLA</button>
 <div id="help">Mover: joystick / A-D · Volar: mantener VUELO + joystick · Saltar · Puñetazo · Rayo · Impulso · Rescate</div>
+<div id="missionCard" aria-live="polite">MISIÓN 1 · Recupera los 11 núcleos</div>
 <div id="controls">
   <div class="cluster"><div id="stick"><div id="knob"></div></div></div>
   <div class="cluster action-grid" aria-label="Controles de acción">
@@ -86,51 +101,66 @@ h1{margin:0;color:#fff;font-size:clamp(32px,8vw,56px);letter-spacing:.08em;text-
 </div>
 <div id="overlay"><div class="panel">
 <h1>SUPERVSK</h1>
-<p>CAPÍTULO 1 · LA AMENAZA SOBRE METRÓPOLIS · V36</p>
-<p>Nueva edición integrada: controles táctiles ampliados, respuesta multitoque y movimiento independiente del mando físico. Rescata civiles, recupera los siete núcleos y derrota al centinela.</p>
+<p>CAMPAÑA · CRISIS DE METRÓPOLIS · V40</p>
+<p>Arte renovado: héroe pixel-art animado, capas de profundidad, fábrica con hornos y grúas, fortaleza de hielo, nieve dinámica, enemigos con siluetas y efectos pixelados.</p>
 <button id="start">COMENZAR PARTIDA</button>
-<p class="small">V36 · Controles accesibles y multitoque · iPhone / iPad · Surface / Windows · teclado, táctil y mando</p>
+<p class="small">V40 · Pixel-art 32 bits · controles táctiles ampliados · iPhone / iPad · Surface / Windows</p>
 </div></div>
 <div id="pauseLayer"><div class="panel"><h1>PAUSA</h1><p>La ciudad espera. Tómate un respiro.</p><button id="resume">CONTINUAR</button><button class="secondary" id="restart">REINICIAR</button></div></div>
 </div>
 <script>
 (()=>{
 const canvas=document.getElementById('c'),ctx=canvas.getContext('2d',{alpha:false,desynchronized:true});
-ctx.imageSmoothingEnabled=true;
+ctx.imageSmoothingEnabled=false;
 document.addEventListener('contextmenu',e=>e.preventDefault());
 document.addEventListener('gesturestart',e=>e.preventDefault());
 const status=document.getElementById('status'),overlay=document.getElementById('overlay');
 let W=960,H=540,dpr=1,started=false,paused=false,cam=0,frame=0,energy=100,won=false;
-const worldW=4200;let ground=430;
+const worldW=6900;let ground=430;
 const keys={left:false,right:false,jump:false,fly:false,hit:false,up:false,down:false,heat:false,rescue:false,dash:false};
 const gp={jump:false,fly:false,hit:false,heat:false,rescue:false,dash:false};
 let score=0, rescued=0, civiliansRescued=0, bossHealth=8, bossActive=false, bossX=worldW-420, bossCooldown=0;
+let bossPhase=0;
+let relaysDestroyed=0, patrolsDefeated=0, missionRewarded={cores:false,civilians:false,relays:false,patrols:false};
+const relays=[620,1510,2390,3210,4480,5660].map((x,i)=>({x,y:ground-92,alive:true,phase:i}));
+const superCells=[780,1740,2630,3820,4930,6120].map((x,i)=>({x,y:ground-74-(i%2)*40,taken:false,phase:i}));
+let shieldTimer=0;
 let dashCooldown=0,dashTimer=0,combo=0,comboTimer=0,bestScore=Number(localStorage.getItem("supervsk_best")||0),checkpointX=90;
 const particles=[];let shake=0;
 let bossAttackClock=0;
 let punchTimer=0,punchCooldown=0,heatTimer=0,heatCooldown=0,heatHitSet=new Set();
 const bossShots=[];
-const civilians=[{x:1080,y:ground-48,rescued:false},{x:1980,y:ground-48,rescued:false},{x:2860,y:ground-48,rescued:false}];
-let message="Rescata los 7 núcleos y encuentra al centinela";
+const civilians=[1080,1980,2860,3970,5080,6240].map(x=>({x,y:ground-48,rescued:false}));
+let message="Explora los tres capítulos y completa sus misiones";
 let stickX=0,stickY=0,touchStickActive=false,padX=0,padY=0;
 const hero={x:90,y:ground-58,vx:0,vy:0,w:34,h:58,onGround:true,facing:1,inv:0};
-const pickups=[520,900,1320,1780,2250,2790,3240].map((x,i)=>({x,y:ground-90-(i%2)*65,baseOffset:90+(i%2)*65,taken:false}));
-const foes=[760,1480,2110,2900,3650].map((x,i)=>({x,y:ground-38,alive:true,dir:i%2?1:-1,origin:x,range:90+i%3*20,speed:0.65+i%2*.18}));
-const platforms=[{x:390,y:345,w:140},{x:850,y:310,w:150},{x:1210,y:355,w:160},{x:1690,y:300,w:170},{x:2180,y:340,w:160},{x:2660,y:290,w:180},{x:3110,y:345,w:160},{x:3500,y:315,w:180},{x:3860,y:350,w:150}];
+const pickups=[520,900,1320,1780,2250,2790,3240,4050,4780,5480,6320].map((x,i)=>({x,y:ground-90-(i%2)*65,baseOffset:90+(i%2)*65,taken:false}));
+const foes=[760,1480,2110,2900,3650,4210,4720,5180,5740,6380,6600,6800].map((x,i)=>({x,y:ground-38,alive:true,dir:i%2?1:-1,origin:x,range:90+i%3*20,speed:0.65+i%2*.18,type:i%3}));
+const platforms=[
+{x:390,y:345,w:140},{x:850,y:310,w:150},{x:1210,y:355,w:160},{x:1690,y:300,w:170},
+{x:2180,y:340,w:160},{x:2660,y:290,w:180},{x:3110,y:345,w:160},{x:3500,y:315,w:180},
+{x:3860,y:350,w:150},{x:4230,y:305,w:170},{x:4610,y:340,w:180},{x:4980,y:285,w:190},
+{x:5350,y:330,w:170},{x:5700,y:295,w:180},{x:6030,y:345,w:170},{x:6380,y:300,w:190},{x:6700,y:340,w:150}];
 const platformBaseY=platforms.map(p=>p.y);
 function resize(){
- dpr=Math.min(window.devicePixelRatio||1,2);
  const vv=window.visualViewport;
  W=Math.max(320,Math.round(vv?.width||window.innerWidth));
  H=Math.max(240,Math.round(vv?.height||window.innerHeight));
  ground=Math.round(H*.80);
- canvas.width=Math.round(W*dpr);canvas.height=Math.round(H*dpr);
+ const landscape=W>=H;
+ const virtualLong=480;
+ const scale=virtualLong/(landscape?W:H);
+ canvas.width=Math.max(160,Math.round(W*scale));
+ canvas.height=Math.max(160,Math.round(H*scale));
  canvas.style.width=W+'px';canvas.style.height=H+'px';
- ctx.setTransform(dpr,0,0,dpr,0,0);ctx.imageSmoothingEnabled=true;
+ ctx.setTransform(canvas.width/W,0,0,canvas.height/H,0,0);
+ ctx.imageSmoothingEnabled=false;
  platforms.forEach((p,i)=>{p.y=ground-(430-platformBaseY[i])});
  pickups.forEach(p=>{p.y=ground-(p.baseOffset||90)});
  foes.forEach(f=>{f.y=ground-38});
  civilians.forEach(c=>{c.y=ground-48});
+ relays.forEach(r=>{r.y=ground-92});
+ superCells.forEach(p=>{p.y=ground-74-(p.phase%2)*40});
  if(hero.onGround)hero.y=ground-hero.h;
 }
 window.addEventListener('resize',resize,{passive:true});
@@ -139,11 +169,15 @@ window.addEventListener('orientationchange',()=>setTimeout(resize,180),{passive:
 resize();
 hero.y=ground-hero.h;
 function rect(x,y,w,h,color){ctx.fillStyle=color;ctx.fillRect(Math.round(x),Math.round(y),w,h)}
+// Hard-edged pixel-art rendering: keep the virtual framebuffer crisp on every device.
+function pixelOutline(x,y,w,h,color='#07182a',line=2){
+ ctx.strokeStyle=color;ctx.lineWidth=line;ctx.strokeRect(Math.round(x)+.5,Math.round(y)+.5,Math.round(w),Math.round(h));
+}
 
 function burst(x,y,color,count=14,power=3){
  for(let i=0;i<count;i++){
   const a=Math.random()*Math.PI*2,sp=.6+Math.random()*power;
-  particles.push({x,y,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp-1.2,life:24+Math.random()*22,max:46,size:2+Math.random()*4,color,glow:true});
+  if(particles.length<260)particles.push({x,y,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp-1.2,life:24+Math.random()*22,max:46,size:2+Math.random()*4,color,glow:true});
  }
 }
 function updateParticles(){
@@ -158,8 +192,10 @@ function drawParticles(){
  for(const p of particles){
   const alpha=Math.max(0,p.life/p.max);
   ctx.globalAlpha=alpha;ctx.fillStyle=p.color;
-  if(p.glow){ctx.shadowColor=p.color;ctx.shadowBlur=12}
-  ctx.beginPath();ctx.arc(p.x-cam,p.y,p.size*alpha,0,Math.PI*2);ctx.fill();
+  if(p.glow){ctx.shadowColor=p.color;ctx.shadowBlur=7}
+  const px=Math.round(p.x-cam),py=Math.round(p.y),sz=Math.max(2,Math.round(p.size*alpha));
+  ctx.fillRect(px,py,sz,sz);
+  if(p.life>p.max*.65){ctx.fillStyle='#ffffffaa';ctx.fillRect(px,py,Math.max(1,sz>>1),Math.max(1,sz>>1));}
  }
  ctx.restore();
 }
@@ -267,69 +303,142 @@ function drawCity(){
  vignette.addColorStop(.55,'#07182a00');vignette.addColorStop(1,'#07182a66');
  ctx.fillStyle=vignette;ctx.fillRect(0,0,W,H);
 }
-function drawHero(){
- const sx=hero.x-cam,sy=hero.y;
+
+function drawChapterAtmosphere(){
+ const chapter=hero.x<2300?1:(hero.x<4600?2:3);
  ctx.save();
- if(hero.inv>0&&Math.floor(frame/5)%2===0)ctx.globalAlpha=.48;
- // Scale around the feet so the larger art stays grounded
- ctx.translate(sx-5,sy-15);ctx.scale(1.28,1.28);
- const bob=(hero.onGround?Math.sin(frame*.16)*.8:Math.sin(frame*.22)*1.8);
- const flightTilt=(keys.fly||!hero.onGround)?-.12:0;
- ctx.rotate(flightTilt);
- // Cape with folds and wind movement
- ctx.save();
- const cape=ctx.createLinearGradient(8,13,-25,58);cape.addColorStop(0,'#f34d5b');cape.addColorStop(.55,'#a91436');cape.addColorStop(1,'#5c102e');
- ctx.fillStyle=cape;ctx.beginPath();ctx.moveTo(13,13);ctx.quadraticCurveTo(-2,20,-10+Math.sin(frame*.22)*7,54+Math.sin(frame*.18)*3);ctx.quadraticCurveTo(8+Math.sin(frame*.2)*3,48,24,44);ctx.lineTo(23,19);ctx.closePath();ctx.fill();
- ctx.strokeStyle='#ff9a9c88';ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(11,19);ctx.quadraticCurveTo(5,34,1,48);ctx.stroke();ctx.restore();
- // Legs and boots
- const legGrad=ctx.createLinearGradient(0,38,0,59);legGrad.addColorStop(0,'#2378d8');legGrad.addColorStop(1,'#102c65');
- ctx.fillStyle=legGrad;
- ctx.beginPath();ctx.moveTo(9,37+bob);ctx.lineTo(18,38+bob);ctx.lineTo(17,53);ctx.lineTo(9,54);ctx.closePath();ctx.fill();
- ctx.beginPath();ctx.moveTo(20,37+bob);ctx.lineTo(29,37+bob);ctx.lineTo(30,53);ctx.lineTo(22,54);ctx.closePath();ctx.fill();
- const boot=ctx.createLinearGradient(0,49,0,59);boot.addColorStop(0,'#e84b55');boot.addColorStop(1,'#751a36');
- ctx.fillStyle=boot;ctx.beginPath();ctx.moveTo(8,51);ctx.lineTo(17,51);ctx.lineTo(19,58);ctx.lineTo(5,58);ctx.closePath();ctx.fill();
- ctx.beginPath();ctx.moveTo(22,51);ctx.lineTo(30,51);ctx.lineTo(34,58);ctx.lineTo(20,58);ctx.closePath();ctx.fill();
- // Torso with dimensional blue suit
- const suit=ctx.createLinearGradient(5,12,32,44);suit.addColorStop(0,'#62c4ff');suit.addColorStop(.24,'#1679e0');suit.addColorStop(.7,'#0750a9');suit.addColorStop(1,'#062d70');
- ctx.fillStyle=suit;ctx.beginPath();ctx.moveTo(11,13);ctx.quadraticCurveTo(18,10,27,14);ctx.lineTo(33,40);ctx.quadraticCurveTo(20,46,5,40);ctx.closePath();ctx.fill();
- // chest highlights and shoulder armor
- ctx.fillStyle='#77d6ff';ctx.beginPath();ctx.ellipse(10,19,5,5,-.3,0,7);ctx.ellipse(29,19,5,5,.3,0,7);ctx.fill();
- ctx.strokeStyle='#9de5ff88';ctx.lineWidth=1.2;ctx.beginPath();ctx.moveTo(18,16);ctx.lineTo(18,42);ctx.stroke();
- // iconic shield emblem
- ctx.fillStyle='#ffdf62';ctx.strokeStyle='#fff2b0';ctx.lineWidth=1;
- ctx.beginPath();ctx.moveTo(11,22);ctx.lineTo(27,22);ctx.lineTo(25,33);ctx.lineTo(19,38);ctx.lineTo(13,33);ctx.closePath();ctx.fill();ctx.stroke();
- ctx.fillStyle='#c62b3f';ctx.font='bold 11px Arial';ctx.textAlign='center';ctx.fillText('S',19,32);
- ctx.save();ctx.globalCompositeOperation='lighter';ctx.fillStyle='#fff2a0';ctx.globalAlpha=.2+.12*Math.sin(frame*.2);ctx.beginPath();ctx.arc(19,29,11,0,7);ctx.fill();ctx.restore();
- // arms and gloves
- const skin=ctx.createLinearGradient(0,17,0,39);skin.addColorStop(0,'#ffd5ac');skin.addColorStop(1,'#c77d61');
- ctx.fillStyle=suit;ctx.beginPath();ctx.moveTo(7,17);ctx.lineTo(12,19);ctx.lineTo(9,34);ctx.lineTo(4,34);ctx.closePath();ctx.fill();
- ctx.fillStyle=skin;ctx.beginPath();ctx.ellipse(5,36,3.5,5,0,0,7);ctx.fill();
- ctx.fillStyle=suit;ctx.beginPath();ctx.moveTo(29,17);ctx.lineTo(34,18);ctx.lineTo(35,32);ctx.lineTo(30,34);ctx.closePath();ctx.fill();
- ctx.fillStyle=skin;ctx.beginPath();ctx.ellipse(33,36,3.5,5,0,0,7);ctx.fill();
- // Neck and face
- ctx.fillStyle='#d99470';ctx.fillRect(15,10,8,7);
- const face=ctx.createLinearGradient(12,0,29,14);face.addColorStop(0,'#ffe0b8');face.addColorStop(1,'#c98265');
- ctx.fillStyle=face;ctx.beginPath();ctx.roundRect(11,0,19,16,5);ctx.fill();
- // hair swept back
- ctx.fillStyle='#17243c';ctx.beginPath();ctx.moveTo(10,7);ctx.quadraticCurveTo(9,-3,20,-3);ctx.quadraticCurveTo(31,-3,32,5);ctx.lineTo(26,5);ctx.lineTo(21,2);ctx.lineTo(16,7);ctx.closePath();ctx.fill();
- // eyes, brows and jaw detail
- ctx.strokeStyle='#633c37';ctx.lineWidth=1.4;ctx.beginPath();ctx.moveTo(14,7);ctx.lineTo(18,6);ctx.moveTo(23,6);ctx.lineTo(27,7);ctx.stroke();
- ctx.fillStyle='#17283b';ctx.fillRect(15,8,3,2);ctx.fillRect(24,8,3,2);
- ctx.strokeStyle='#9c5c50';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(20,9);ctx.lineTo(19,12);ctx.lineTo(22,12);ctx.stroke();
- // flight aura and motion trails
- if(keys.fly||!hero.onGround){
-   ctx.save();ctx.globalCompositeOperation='lighter';
-   const aura=ctx.createRadialGradient(19,31,4,19,31,37);aura.addColorStop(0,'#71dcff00');aura.addColorStop(.72,'#65dfff22');aura.addColorStop(1,'#65dfff00');
-   ctx.fillStyle=aura;ctx.beginPath();ctx.arc(19,31,37,0,7);ctx.fill();
-   ctx.strokeStyle='#a5edff99';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(8,43);ctx.lineTo(-8,56+Math.sin(frame*.3)*4);ctx.moveTo(26,45);ctx.lineTo(42,55);ctx.stroke();ctx.restore();
+ if(chapter===1){
+  // Warm sunset light, distant antennae and animated city billboards.
+  ctx.fillStyle='#ffb15a0c';ctx.fillRect(0,0,W,H);
+  for(let i=0;i<6;i++){
+   const x=((i*205-cam*.68)%(W+180)+W+180)%(W+180)-80;
+   const y=ground-(105+(i*31%75));
+   ctx.fillStyle='#142b48';ctx.fillRect(x,y,66,ground-y);
+   ctx.fillStyle='#244d6d';ctx.fillRect(x+5,y+8,56,ground-y-8);
+   ctx.fillStyle='#ffda8a';ctx.fillRect(x+10,y+16,46,4);
+   ctx.fillStyle='#65c6e8';ctx.fillRect(x+10,y+29,7,13);ctx.fillRect(x+25,y+29,7,13);ctx.fillRect(x+40,y+29,7,13);
+   ctx.fillStyle='#e5a65b';ctx.fillRect(x+25,y-14,3,14);
+  }
+  ctx.fillStyle='#ffe6a8';ctx.font='900 13px system-ui';ctx.fillText('METRÓPOLIS · DISTRITO CENTRAL',W-265,155);
+ }else if(chapter===2){
+  // Industrial foundry: chimneys, girders, hazard lights and furnace glow.
+  ctx.fillStyle='#ff6d241c';ctx.fillRect(0,0,W,H);
+  for(let i=0;i<8;i++){
+   const x=((i*170-cam*.62)%(W+210)+W+210)%(W+210)-90;
+   const ht=105+(i*43%115),y=ground-ht;
+   ctx.fillStyle='#172538';ctx.fillRect(x,y,54,ht);
+   ctx.fillStyle='#526477';ctx.fillRect(x+5,y+8,44,6);
+   ctx.fillStyle='#293d50';ctx.fillRect(x+9,y+18,36,ht-18);
+   ctx.fillStyle='#ff8c39';ctx.fillRect(x+14,y+35,8,16);ctx.fillRect(x+31,y+35,8,16);
+   ctx.fillStyle='#e4a05a';ctx.fillRect(x+22,y-24,12,24);
+   ctx.fillStyle='#ff8c39';ctx.fillRect(x+20,y-28,16,5);
+   ctx.fillStyle='#0b1728';ctx.fillRect(x-10,y+ht-15,74,15);
+   ctx.fillStyle='#ffcc65';for(let q=x-6;q<x+60;q+=18)ctx.fillRect(q,y+ht-12,9,4);
+  }
+  // Suspended industrial gantries.
+  ctx.fillStyle='#25394e';ctx.fillRect(0,ground-185,W,7);
+  for(let x=-(cam*.3%155);x<W;x+=155){ctx.fillRect(x,ground-185,5,35);ctx.fillRect(x+5,ground-158,28,4)}
+  ctx.fillStyle='#ffb15d';ctx.font='900 13px system-ui';ctx.fillText('SECTOR INDUSTRIAL · ZONA DE ALTO RIESGO',W-330,155);
+ }else{
+  // Arctic fortress: crystalline towers, frozen cliffs, drifting snow and cold lighting.
+  ctx.fillStyle='#8ee9ff18';ctx.fillRect(0,0,W,H);
+  for(let i=0;i<10;i++){
+   const x=((i*138-cam*.58)%(W+180)+W+180)%(W+180)-70;
+   const ht=100+(i*47%150);
+   ctx.fillStyle=i%2?'#8ccce4aa':'#d7f5ffbb';
+   ctx.beginPath();ctx.moveTo(x-10,ground);ctx.lineTo(x+17,ground-ht);ctx.lineTo(x+44,ground);ctx.closePath();ctx.fill();
+   ctx.fillStyle='#efffff';ctx.fillRect(x+13,ground-ht+18,7,ht-22);
+   ctx.fillStyle='#5799bd88';ctx.fillRect(x+25,ground-ht+38,5,ht-40);
+  }
+  // Ice fortress walls and glowing windows.
+  for(let i=0;i<5;i++){
+   const x=((i*220-cam*.42)%(W+240)+W+240)%(W+240)-100;
+   const ht=125+(i*33%90),y=ground-ht;
+   ctx.fillStyle='#244e70';ctx.fillRect(x,y,82,ht);
+   ctx.fillStyle='#8bd9f0';ctx.fillRect(x+6,y+7,70,5);
+   ctx.fillStyle='#b7f5ff';ctx.fillRect(x+16,y+25,10,24);ctx.fillRect(x+53,y+25,10,24);
+   ctx.fillStyle='#153654';ctx.fillRect(x+34,y+55,15,ht-55);
+  }
+  // Snow motes, deterministic and lightweight.
+  ctx.fillStyle='#e6fbffbb';
+  for(let i=0;i<36;i++){
+   const x=((i*73-frame*(.25+(i%4)*.08))%(W+20)+W+20)%(W+20)-10;
+   const y=(i*47+frame*(.35+(i%3)*.12))%(Math.max(1,ground-25));
+   ctx.fillRect(Math.round(x),Math.round(y),i%5===0?3:2,i%5===0?3:2);
+  }
+  ctx.fillStyle='#dffaff';ctx.font='900 13px system-ui';ctx.fillText('FORTALEZA ÁRTICA · NÚCLEO POLAR',W-280,155);
+ }
+ // Cinematic foreground silhouette to strengthen depth.
+ ctx.globalAlpha=.65;ctx.fillStyle=chapter===3?'#102c46':'#0b1a2b';
+ for(let x=-(cam*.82%120);x<W;x+=120){
+  ctx.fillRect(x,ground+25,72,Math.max(0,H-ground-25));
+  ctx.fillStyle=chapter===2?'#ff8d3c':'#6e9db4';
+  ctx.fillRect(x+12,ground+35,4,4);ctx.fillRect(x+28,ground+35,4,4);
+  ctx.fillStyle=chapter===3?'#102c46':'#0b1a2b';
  }
  ctx.restore();
 }
+
+function drawHero(){
+ const sx=hero.x-cam+hero.w/2,sy=hero.y+hero.h/2;
+ const running=Math.abs(hero.vx)>.5&&!keys.fly&&!hero.onGround?Math.sin(frame*.45):Math.sin(frame*.28);
+ const bob=hero.onGround?Math.abs(Math.sin(frame*.22))*1.2:0;
+ ctx.save();
+ ctx.translate(Math.round(sx),Math.round(sy+bob));
+ ctx.scale(hero.facing,1);
+ if(hero.inv>0&&Math.floor(frame/4)%2===0)ctx.globalAlpha=.48;
+ // Pixel shadow and cape silhouette.
+ ctx.fillStyle='#07132388';ctx.fillRect(-17,27,34,5);
+ const capeWave=Math.round(Math.sin(frame*.22)*3);
+ ctx.fillStyle='#54152f';ctx.fillRect(-14,-18,9,31);
+ ctx.fillStyle='#b51f43';ctx.fillRect(-17,-16,10,27+capeWave);
+ ctx.fillStyle='#f35b68';ctx.fillRect(-14,-17,5,19);
+ ctx.fillStyle='#7b1836';ctx.fillRect(-17,8+capeWave,7,7);
+ // Boots and legs, animated in two clear poses.
+ const legA=Math.round(running*2),legB=-legA;
+ ctx.fillStyle='#09295d';ctx.fillRect(-9,13+legA,7,11);ctx.fillRect(3,13+legB,7,11);
+ ctx.fillStyle='#176bd0';ctx.fillRect(-10,5+legA,8,13);ctx.fillRect(2,5+legB,8,13);
+ ctx.fillStyle='#b51f3d';ctx.fillRect(-11,22+legA,10,5);ctx.fillRect(1,22+legB,11,5);
+ ctx.fillStyle='#ff7780';ctx.fillRect(-10,22+legA,4,2);ctx.fillRect(2,22+legB,4,2);
+ // Torso: dark outline, blue suit panels and shoulder highlights.
+ ctx.fillStyle='#061b42';ctx.fillRect(-13,-19,26,27);
+ ctx.fillStyle='#0753a5';ctx.fillRect(-11,-20,22,25);
+ ctx.fillStyle='#1688ed';ctx.fillRect(-9,-20,13,21);
+ ctx.fillStyle='#63caff';ctx.fillRect(-9,-19,5,10);
+ ctx.fillStyle='#063777';ctx.fillRect(4,-16,6,18);
+ ctx.fillStyle='#9eeaff';ctx.fillRect(-13,-18,4,6);ctx.fillRect(9,-18,4,6);
+ // Iconic chest shield, designed as a pixel emblem.
+ ctx.fillStyle='#f8d65d';ctx.fillRect(-6,-15,13,12);
+ ctx.fillStyle='#a51f37';ctx.fillRect(-4,-13,9,8);
+ ctx.fillStyle='#fff0a1';ctx.fillRect(-4,-14,3,2);
+ ctx.fillStyle='#f9d65d';ctx.fillRect(-2,-12,2,5);ctx.fillRect(1,-10,3,3);
+ // Arms and gloves.
+ ctx.fillStyle='#09295d';ctx.fillRect(-16,-17,5,17);ctx.fillRect(11,-17,5,17);
+ ctx.fillStyle='#1478d5';ctx.fillRect(-16,-17,5,10);ctx.fillRect(11,-17,5,10);
+ ctx.fillStyle='#f1bd91';ctx.fillRect(-16,-2,5,5);ctx.fillRect(11,-2,5,5);
+ ctx.fillStyle='#f8d9ae';ctx.fillRect(-15,-3,3,2);ctx.fillRect(12,-3,3,2);
+ // Head, hair, face and eye.
+ ctx.fillStyle='#6b342d';ctx.fillRect(-8,-31,17,14);
+ ctx.fillStyle='#f0bd91';ctx.fillRect(-7,-30,14,13);
+ ctx.fillStyle='#ffd8ae';ctx.fillRect(-6,-29,7,6);
+ ctx.fillStyle='#38232a';ctx.fillRect(-8,-32,16,5);ctx.fillRect(-8,-29,4,4);ctx.fillRect(5,-30,4,3);
+ ctx.fillStyle='#202c45';ctx.fillRect(3,-24,3,2);
+ ctx.fillStyle='#8e4b45';ctx.fillRect(-1,-20,4,2);
+ // Flight aura and speed pixels.
+ if(keys.fly||!hero.onGround){
+  ctx.globalCompositeOperation='lighter';ctx.globalAlpha=.55;
+  ctx.fillStyle='#5edfff';ctx.fillRect(-22,-8,3,17);ctx.fillRect(18,-2,3,13);
+  ctx.fillStyle='#e5ffff';ctx.fillRect(-20,8,2,8);ctx.fillRect(19,10,2,6);
+ }
+ ctx.restore();
+}
+
 function draw(){
  ctx.clearRect(0,0,W,H);
  ctx.save();
  if(shake>.4)ctx.translate((Math.random()-.5)*shake,(Math.random()-.5)*shake);
  drawCity();
+ drawChapterAtmosphere();
  // platforms
  platforms.forEach(p=>{let x=p.x-cam;if(x>-200&&x<W+200){
  const pg=ctx.createLinearGradient(x,p.y,x,p.y+20);pg.addColorStop(0,'#a9c7d6');pg.addColorStop(.22,'#4e718d');pg.addColorStop(1,'#172f4a');
@@ -346,11 +455,26 @@ function draw(){
  ctx.restore();
  }});
  foes.forEach(f=>{if(f.alive){let x=f.x-cam,y=f.y;
- const metal=ctx.createLinearGradient(x,y,x+30,y+35);metal.addColorStop(0,'#b9c9d5');metal.addColorStop(.35,'#586e85');metal.addColorStop(1,'#202e43');
- ctx.fillStyle=metal;ctx.beginPath();ctx.roundRect(x,y,30,35,7);ctx.fill();
- ctx.fillStyle='#202c40';ctx.fillRect(x+4,y+26,7,10);ctx.fillRect(x+19,y+26,7,10);
- ctx.fillStyle='#ff5362';ctx.shadowColor='#ff354d';ctx.shadowBlur=10;ctx.fillRect(x+5,y+9,7,4);ctx.fillRect(x+19,y+9,7,4);ctx.shadowBlur=0;
- ctx.strokeStyle='#dcecf5';ctx.lineWidth=1;ctx.strokeRect(x+3,y+3,24,28);
+ const palettes=[['#c8d8e2','#60778c','#202e43'],['#ffbd72','#a34b28','#3a2020'],['#baf4ff','#4c8bb0','#18334d']];
+ const pal=palettes[f.type||0];const metal=ctx.createLinearGradient(x,y,x+30,y+35);metal.addColorStop(0,pal[0]);metal.addColorStop(.35,pal[1]);metal.addColorStop(1,pal[2]);
+ ctx.fillStyle=metal;
+ if((f.type||0)===1){ctx.fillRect(x-3,y+5,36,24);ctx.fillRect(x+5,y,20,35);ctx.fillStyle='#ff9c42';ctx.fillRect(x+4,y+12,6,5);ctx.fillRect(x+21,y+12,6,5);}
+ else if((f.type||0)===2){ctx.beginPath();ctx.moveTo(x+15,y-5);ctx.lineTo(x+32,y+12);ctx.lineTo(x+27,y+35);ctx.lineTo(x+3,y+35);ctx.lineTo(x-2,y+12);ctx.closePath();ctx.fill();ctx.fillStyle='#8ff3ff';ctx.fillRect(x+5,y+10,7,4);ctx.fillRect(x+19,y+10,7,4);}
+ else {ctx.beginPath();ctx.roundRect(x,y,30,35,7);ctx.fill();ctx.fillStyle='#202c40';ctx.fillRect(x+4,y+26,7,10);ctx.fillRect(x+19,y+26,7,10);ctx.fillStyle='#ff5362';ctx.fillRect(x+5,y+9,7,4);ctx.fillRect(x+19,y+9,7,4);}
+ ctx.shadowColor=pal[0];ctx.shadowBlur=8;ctx.strokeStyle='#dcecf5';ctx.lineWidth=1;ctx.strokeRect(x+3,y+3,24,28);ctx.shadowBlur=0;
+ }});
+ // Communication relays: optional-looking mission targets, required to expose the Sentinel.
+ relays.forEach(r=>{if(r.alive){const x=r.x-cam,y=r.y;ctx.save();
+   ctx.fillStyle='#263b58';ctx.fillRect(x-9,y+45,34,9);
+   ctx.fillStyle='#476987';ctx.fillRect(x,y+8,16,39);ctx.fillStyle='#9bdfff';ctx.fillRect(x+5,y,6,12);
+   ctx.fillStyle='#ff4b5b';ctx.shadowColor='#ff3b56';ctx.shadowBlur=12;ctx.fillRect(x+3,y+17,10,6);ctx.shadowBlur=0;
+   ctx.strokeStyle='#b8edff';ctx.lineWidth=2;ctx.strokeRect(x-2,y+5,20,44);
+   ctx.fillStyle='#fff';ctx.font='bold 10px Arial';ctx.textAlign='center';ctx.fillText('BALIZA',x+8,y-6);ctx.restore();
+ }});
+ // Supercells restore flight energy and grant a brief protective shield.
+ superCells.forEach(p=>{if(!p.taken){const x=p.x-cam,y=p.y+Math.sin(frame*.09+p.phase)*4;ctx.save();
+   ctx.shadowColor='#68f5ff';ctx.shadowBlur=18;ctx.fillStyle='#7cf7ff';ctx.beginPath();ctx.moveTo(x,y-12);ctx.lineTo(x+12,y);ctx.lineTo(x,y+12);ctx.lineTo(x-12,y);ctx.closePath();ctx.fill();
+   ctx.fillStyle='#fff';ctx.fillRect(x-2,y-7,4,14);ctx.restore();
  }});
  civilians.forEach(c=>{if(!c.rescued){let x=c.x-cam,y=c.y;
  ctx.fillStyle='#20334b';ctx.beginPath();ctx.ellipse(x+14,y+45,13,3,0,0,7);ctx.fill();
@@ -364,16 +488,18 @@ function draw(){
  bossShots.forEach(b=>{const x=b.x-cam;ctx.save();ctx.shadowColor='#ff4b4b';ctx.shadowBlur=18;const bolt=ctx.createRadialGradient(x-2,b.y-2,1,x,b.y,10);bolt.addColorStop(0,'#fff6ca');bolt.addColorStop(.35,'#ffb14d');bolt.addColorStop(1,'#ef344c');ctx.fillStyle=bolt;ctx.beginPath();ctx.arc(x,b.y,9,0,7);ctx.fill();ctx.restore()});
  if(bossActive && bossHealth>0){let bx=bossX-cam,by=ground-118;
  ctx.save();ctx.shadowColor='#ff4c5c';ctx.shadowBlur=17;
- const armor=ctx.createLinearGradient(bx,by,bx+80,by+120);armor.addColorStop(0,'#d3e0e8');armor.addColorStop(.22,'#667f98');armor.addColorStop(.55,'#293f59');armor.addColorStop(1,'#111e35');
+ const bossPalettes=[['#d3e0e8','#667f98','#111e35'],['#ffcc8b','#b45a35','#351b24'],['#bff8ff','#4e9cc4','#102c55']];
+ const bp=bossPalettes[Math.max(0,bossPhase-1)];const armor=ctx.createLinearGradient(bx,by,bx+80,by+120);armor.addColorStop(0,bp[0]);armor.addColorStop(.22,bp[1]);armor.addColorStop(.55,bp[2]);armor.addColorStop(1,'#071326');
  ctx.fillStyle=armor;ctx.beginPath();ctx.moveTo(bx+20,by+8);ctx.lineTo(bx+60,by+8);ctx.lineTo(bx+78,by+48);ctx.lineTo(bx+68,by+106);ctx.lineTo(bx+12,by+106);ctx.lineTo(bx+2,by+48);ctx.closePath();ctx.fill();
  ctx.fillStyle='#1c3049';ctx.beginPath();ctx.roundRect(bx+13,by+22,54,30,8);ctx.fill();
- ctx.fillStyle='#ff4b58';ctx.shadowBlur=18;ctx.fillRect(bx+22,by+33,13,7);ctx.fillRect(bx+45,by+33,13,7);
+ ctx.fillStyle=bossPhase===1?'#ff4b58':(bossPhase===2?'#ff9b38':'#8cf5ff');ctx.shadowBlur=18;ctx.fillRect(bx+22,by+33,13,7);ctx.fillRect(bx+45,by+33,13,7);
  ctx.shadowBlur=0;ctx.fillStyle='#9eb7c9';ctx.fillRect(bx+26,by+57,27,7);
  ctx.fillStyle='#1b2a40';ctx.fillRect(bx+17,by+104,17,14);ctx.fillRect(bx+48,by+104,17,14);
  ctx.strokeStyle='#d6f2ff';ctx.lineWidth=2;ctx.stroke();
- ctx.fillStyle='#251b2d';ctx.fillRect(bx,by-14,80,7);ctx.fillStyle='#ff5965';ctx.fillRect(bx,by-14,80*bossHealth/8,7);
+ ctx.fillStyle='#251b2d';ctx.fillRect(bx,by-14,80,7);ctx.fillStyle=bossPhase===1?'#ff5965':(bossPhase===2?'#ff9b38':'#75edff');ctx.fillRect(bx,by-14,80*bossHealth/8,7);ctx.fillStyle='#fff';ctx.font='bold 10px Arial';ctx.fillText(`JEFE ${bossPhase}/3`,bx,by-20);
  ctx.restore();
  }
+ if(shieldTimer>0){ctx.save();const sx=hero.x-cam+hero.w/2,sy=hero.y+hero.h/2;ctx.strokeStyle='#7cf7ff';ctx.lineWidth=3;ctx.globalAlpha=.55+.25*Math.sin(frame*.25);ctx.shadowColor='#45eaff';ctx.shadowBlur=18;ctx.beginPath();ctx.ellipse(sx,sy,31,39,0,0,Math.PI*2);ctx.stroke();ctx.restore();}
  drawHero();
  // Visible punch arc and twin-core heat vision beam.
  if(punchTimer>0){
@@ -397,34 +523,57 @@ function draw(){
  let gx=worldW-100-cam;rect(gx,ground-105,8,105,'#e7edf7');rect(gx-22,ground-110,52,22,'#e43d50');ctx.fillStyle='white';ctx.font='bold 12px Arial';ctx.fillText('META',gx-16,ground-95);
  // energy bar
  rect(14,H-18,120,6,'#102a48');rect(14,H-18,120*energy/100,6,'#f4d45d');
- ctx.fillStyle='#f5fbff';ctx.font='800 13px system-ui';ctx.textAlign='left';ctx.shadowColor='#00182d';ctx.shadowBlur=7;ctx.fillText(`NÚCLEOS ${rescued}/7   CIVILES ${civiliansRescued}/3   PUNTOS ${score}   RÉCORD ${bestScore}`,14,92);ctx.shadowBlur=0;
- ctx.fillStyle='#fff4d9';ctx.font='600 12px system-ui';ctx.shadowColor='#00182d';ctx.shadowBlur=7;ctx.fillText(message,14,112);ctx.shadowBlur=0;
+ ctx.fillStyle='#f5fbff';ctx.font='800 13px system-ui';ctx.textAlign='left';ctx.shadowColor='#00182d';ctx.shadowBlur=7;ctx.fillText(`NÚCLEOS ${rescued}/11   CIVILES ${civiliansRescued}/6   PATRULLAS ${patrolsDefeated}/12   PUNTOS ${score}`,14,92);ctx.shadowBlur=0;
+ ctx.fillStyle='#fff4d9';ctx.font='600 12px system-ui';ctx.shadowColor='#00182d';ctx.shadowBlur=7;ctx.fillText(message,14,112);
+ ctx.fillStyle='#bcecff';ctx.font='700 11px system-ui';ctx.fillText(`BALIZAS ${relaysDestroyed}/6   SUPER CÉLULAS ${superCells.filter(p=>p.taken).length}/6`,14,130);ctx.shadowBlur=0;
+ // Fine retro pixel finish: subtle scanlines and edge vignette.
+ ctx.save();ctx.globalAlpha=.075;ctx.fillStyle='#061426';
+ for(let y=0;y<H;y+=4)ctx.fillRect(0,y,W,1);
+ const vignette=ctx.createRadialGradient(W/2,H/2,Math.min(W,H)*.25,W/2,H/2,Math.max(W,H)*.72);
+ vignette.addColorStop(0,'#00000000');vignette.addColorStop(1,'#020817');ctx.globalAlpha=.28;ctx.fillStyle=vignette;ctx.fillRect(0,0,W,H);ctx.restore();
  ctx.restore();
- if(won){ctx.fillStyle='#06152dcc';ctx.fillRect(0,0,W,H);ctx.fillStyle='white';ctx.textAlign='center';ctx.font='bold 30px Arial';ctx.fillText('¡METRÓPOLIS ESTÁ A SALVO!',W/2,H/2);ctx.font='16px Arial';ctx.fillText('Capítulo 1 completado · Civiles rescatados: '+civiliansRescued+' · Recarga para jugar otra vez',W/2,H/2+34)}
+ if(won){ctx.fillStyle='#06152dcc';ctx.fillRect(0,0,W,H);ctx.fillStyle='white';ctx.textAlign='center';ctx.font='bold 30px Arial';ctx.fillText('¡METRÓPOLIS ESTÁ A SALVO!',W/2,H/2);ctx.font='16px Arial';ctx.fillText('Tres capítulos completados · '+civiliansRescued+'/6 civiles · '+relaysDestroyed+'/6 balizas · '+superCells.filter(p=>p.taken).length+'/6 supercélulas',W/2,H/2+34)}
 }
 function update(){
  if(!started||won||paused){updateParticles();return}frame++;updateParticles();
  if(comboTimer>0)comboTimer--;else combo=0;
+ const missionCard=document.getElementById('missionCard');
+ const chapterName=hero.x<2300?'CAPÍTULO 1/3 · METRÓPOLIS':(hero.x<4600?'CAPÍTULO 2/3 · INDUSTRIAL':'CAPÍTULO 3/3 · FORTALEZA ÁRTICA');
+ const missionText=bossActive?'MISIÓN FINAL · Derrota al Centinela':
+  rescued<11?'MISIÓN 1 · Recupera los 11 núcleos':
+  civiliansRescued<6?'MISIÓN 2 · Rescata a los 6 civiles':
+  patrolsDefeated<12?'MISIÓN 3 · Elimina las 12 patrullas':
+  relaysDestroyed<6?'MISIÓN 4 · Destruye las 6 balizas':'OBJETIVOS COMPLETADOS · Prepárate para el jefe';
+ if(missionCard)missionCard.textContent=chapterName+' · '+missionText;
+ if(rescued===11&&!missionRewarded.cores){missionRewarded.cores=true;score+=700;message="Misión 1 completada · +700 puntos";}
+ if(civiliansRescued===6&&!missionRewarded.civilians){missionRewarded.civilians=true;score+=1000;message="Misión 2 completada · +1000 puntos";}
+ if(patrolsDefeated===12&&!missionRewarded.patrols){missionRewarded.patrols=true;score+=900;message="Misión 3 completada · +900 puntos";}
+ if(relaysDestroyed===6&&!missionRewarded.relays){missionRewarded.relays=true;score+=1200;message="Misión 4 completada · +1200 puntos";}
  if(dashCooldown>0)dashCooldown--;if(dashTimer>0)dashTimer--;
  if(punchCooldown>0)punchCooldown--;if(punchTimer>0)punchTimer--;
  if(heatCooldown>0)heatCooldown--;if(heatTimer>0)heatTimer--;
  if((keys.hit||gp.hit)&&punchCooldown<=0){
    punchTimer=9;punchCooldown=25;
    const target=foes.find(f=>f.alive&&Math.abs(f.y-hero.y)<55&&(f.x-hero.x)*hero.facing>0&&(f.x-hero.x)*hero.facing<92);
-   if(target){target.alive=false;burst(target.x+15,target.y+17,'#ffb36b',25,4);burst(target.x+15,target.y+17,'#d9f5ff',14,3);shake=5;energy=Math.min(100,energy+8);score+=250;combo++;comboTimer=150;score+=Math.min(combo,8)*50;message=combo>1?`¡COMBO x${combo}! ¡Golpe certero!`:"¡Golpe certero!"; }
+   if(target){target.alive=false;patrolsDefeated++;burst(target.x+15,target.y+17,'#ffb36b',25,4);burst(target.x+15,target.y+17,'#d9f5ff',14,3);shake=5;energy=Math.min(100,energy+8);score+=250;combo++;comboTimer=150;score+=Math.min(combo,8)*50;message=combo>1?`¡COMBO x${combo}! ¡Golpe certero!`:"¡Golpe certero!"; }
    else {burst(hero.x+hero.facing*48,hero.y+27,'#bcecff',7,1.8);message="¡Puñetazo al aire! Acércate al enemigo";}
  }
  if((keys.heat||gp.heat)&&heatCooldown<=0&&energy>=5){
    heatTimer=12;heatCooldown=34;energy=Math.max(0,energy-5);heatHitSet.clear();
    const beamEnd=hero.x+hero.facing*300;
-   foes.forEach(f=>{if(f.alive&&Math.abs(f.y-hero.y)<62&&(f.x-hero.x)*hero.facing>18&&(f.x-hero.x)*hero.facing<300){f.alive=false;heatHitSet.add("foe"+foes.indexOf(f));burst(f.x+15,f.y+17,'#ff8b55',28,5);score+=250;combo++;comboTimer=150;score+=Math.min(combo,8)*50;message="¡Visión calorífica! Robot destruido";shake=4;}});
+   foes.forEach(f=>{if(f.alive&&Math.abs(f.y-hero.y)<62&&(f.x-hero.x)*hero.facing>18&&(f.x-hero.x)*hero.facing<300){f.alive=false;patrolsDefeated++;heatHitSet.add("foe"+foes.indexOf(f));burst(f.x+15,f.y+17,'#ff8b55',28,5);score+=250;combo++;comboTimer=150;score+=Math.min(combo,8)*50;message="¡Visión calorífica! Robot destruido";shake=4;}});
+   relays.forEach(r=>{if(r.alive&&Math.abs(r.y-hero.y)<115&&(r.x-hero.x)*hero.facing>15&&(r.x-hero.x)*hero.facing<300){r.alive=false;relaysDestroyed++;score+=400;energy=Math.min(100,energy+8);burst(r.x+8,r.y+20,'#72efff',30,4);shake=5;message=`¡Baliza destruida! ${relaysDestroyed}/4`;}});
    if(bossActive&&bossHealth>0&&Math.abs(hero.y-(ground-65))<100&&(bossX-hero.x)*hero.facing>0&&(bossX-hero.x)*hero.facing<300&&bossCooldown<=0){bossHealth-=2;bossCooldown=24;score+=600;burst(bossX+40,ground-65,'#ff5a35',28,5);shake=8;message=`¡Rayo de calor! Centinela ${Math.max(0,bossHealth)}/8`;}
  }
  const flying=(keys.fly||gp.fly)&&energy>0;
  let ax=(keys.right?1:0)-(keys.left?1:0);
  if(touchStickActive)ax=Math.abs(stickX)>.12?stickX:0;
  else if(Math.abs(padX)>.12)ax=padX;
- hero.vx=ax*(flying?4.8:3.5);if(ax)hero.facing=Math.sign(ax);
+ const targetVx=ax*(flying?4.8:3.5);
+ const accel=ax?0.22:0.16;
+ hero.vx+=(targetVx-hero.vx)*accel;
+ if(Math.abs(hero.vx)<0.035)hero.vx=0;
+ if(ax)hero.facing=Math.sign(ax);
  if((keys.dash||gp.dash)&&dashCooldown<=0&&energy>=8){dashTimer=10;dashCooldown=48;energy=Math.max(0,energy-8);hero.inv=Math.max(hero.inv,14);hero.vx=hero.facing*11;hero.vy*=.35;burst(hero.x+17,hero.y+29,"#8cecff",14,3);message="¡Impulso heroico!";keys.dash=false;gp.dash=false;}
  if(dashTimer>0)hero.vx=hero.facing*11;
  if((keys.jump||gp.jump)&&hero.onGround){hero.vy=-10.8;hero.onGround=false;keys.jump=false}
@@ -442,8 +591,10 @@ function update(){
  if(hero.y+hero.h>=ground){hero.y=ground-hero.h;hero.vy=0;hero.onGround=true}
  platforms.forEach(p=>{if(hero.x+hero.w>p.x&&hero.x<p.x+p.w&&hero.y+hero.h>=p.y&&hero.y+hero.h<=p.y+18&&hero.vy>=0){hero.y=p.y-hero.h;hero.vy=0;hero.onGround=true}});
  pickups.forEach(p=>{if(!p.taken&&Math.abs(hero.x+17-p.x)<25&&Math.abs(hero.y+25-p.y)<32){p.taken=true;energy=Math.min(100,energy+18);score+=100;rescued++;checkpointX=Math.max(checkpointX,Math.max(90,p.x-70));burst(p.x,p.y,'#ffe36c',22,4);shake=3;message=`Núcleo recuperado (${rescued}/7)`}});
+ superCells.forEach(p=>{if(!p.taken&&Math.abs(hero.x+17-p.x)<28&&Math.abs(hero.y+25-p.y)<35){p.taken=true;energy=Math.min(100,energy+35);shieldTimer=600;score+=350;burst(p.x,p.y,'#7cf7ff',28,4);message="¡Supercélula! Energía restaurada y escudo temporal";}});
+ if(shieldTimer>0)shieldTimer--;
  foes.forEach(f=>{if(f.alive){f.bob=(f.bob||0)+.08;f.x+=f.dir*f.speed;if(f.x>f.origin+f.range||f.x<f.origin-f.range)f.dir*=-1;f.y=ground-38+Math.sin(f.bob)*2}
- if(f.alive&&Math.abs(hero.x-f.x)<35&&Math.abs(hero.y-f.y)<45&&hero.inv<=0&&!punchTimer&&!heatTimer){energy=Math.max(0,energy-15);hero.inv=55;hero.vx=-hero.facing*5;hero.vy=-5}});
+ if(f.alive&&Math.abs(hero.x-f.x)<35&&Math.abs(hero.y-f.y)<45&&hero.inv<=0&&shieldTimer<=0&&!punchTimer&&!heatTimer){energy=Math.max(0,energy-15);hero.inv=55;hero.vx=-hero.facing*5;hero.vy=-5}});
  if(hero.inv>0)hero.inv--;
  civilians.forEach(c=>{
    if(!c.rescued && Math.abs(hero.x-c.x)<58 && Math.abs(hero.y-c.y)<62 && (keys.rescue||gp.rescue)){
@@ -453,31 +604,57 @@ function update(){
      keys.rescue=false;gp.rescue=false;
    }
  });
- if(rescued===7&&!bossActive){bossActive=true;bossAttackClock=90;message="¡El centinela ha aparecido! Derrótalo con golpe o visión calorífica"}
+ if(rescued===11&&civiliansRescued===6&&relaysDestroyed===6&&patrolsDefeated===12&&!bossActive){bossActive=true;bossPhase=1;bossHealth=8;bossAttackClock=90;message="¡Capítulo final! El Centinela ha aparecido";}
  if(bossActive&&bossHealth>0){
    bossAttackClock--;
    if(bossAttackClock<=0){
      const dx=(hero.x+hero.w/2)-(bossX+32),dy=(hero.y+hero.h/2)-(ground-70),len=Math.hypot(dx,dy)||1;
-     bossShots.push({x:bossX+32,y:ground-70,vx:dx/len*3.4,vy:dy/len*3.4});
-     bossAttackClock=105;
+     bossShots.push({x:bossX+32,y:ground-70,vx:dx/len*(3.1+bossPhase*.65),vy:dy/len*(3.1+bossPhase*.65)});
+     bossAttackClock=Math.max(48,105-bossPhase*18);
    }
  }
  for(let i=bossShots.length-1;i>=0;i--){
    const b=bossShots[i];b.x+=b.vx;b.y+=b.vy;
    if(Math.abs(hero.x+hero.w/2-b.x)<23&&Math.abs(hero.y+hero.h/2-b.y)<25){
-     if(hero.inv<=0){energy=Math.max(0,energy-12);hero.inv=60;hero.vx=(hero.x<b.x?-4:4);hero.vy=-4;message="¡Impacto del centinela! Esquiva sus proyectiles";}
+     if(hero.inv<=0&&shieldTimer<=0){energy=Math.max(0,energy-12);hero.inv=60;hero.vx=(hero.x<b.x?-4:4);hero.vy=-4;message="¡Impacto del centinela! Esquiva sus proyectiles";}
      bossShots.splice(i,1);
    }else if(b.x<cam-50||b.x>cam+W+80||b.y<0||b.y>H)bossShots.splice(i,1);
  }
- if(bossActive&&bossHealth>0&&punchTimer>0&&Math.abs(hero.y-(ground-hero.h))<90&&(bossX-hero.x)*hero.facing>0&&(bossX-hero.x)*hero.facing<88&&bossCooldown<=0){bossHealth--;bossCooldown=20;score+=300;combo++;comboTimer=150;score+=Math.min(combo,8)*50;burst(bossX+40,ground-65,'#ff5965',22,4);burst(bossX+40,ground-65,'#b8eaff',14,3);shake=7;message=`¡Puñetazo al centinela! ${Math.max(0,bossHealth)}/8`}
+ if(bossActive&&bossHealth>0&&punchTimer>0&&Math.abs(hero.y-(ground-hero.h))<90&&(bossX-hero.x)*hero.facing>0&&(bossX-hero.x)*hero.facing<88&&bossCooldown<=0){bossHealth--;bossCooldown=20;score+=300;combo++;comboTimer=150;score+=Math.min(combo,8)*50;burst(bossX+40,ground-65,'#ff5965',22,4);burst(bossX+40,ground-65,'#b8eaff',14,3);shake=7;message=`¡Impacto al jefe ${bossPhase}/3! ${Math.max(0,bossHealth)}/8`}
  if(bossCooldown>0)bossCooldown--;
- if(bossActive&&bossHealth<=0){won=true;if(score>bestScore){bestScore=score;try{localStorage.setItem('supervsk_best',String(bestScore))}catch(_){}}burst(bossX+40,ground-65,'#ffcc69',55,7);burst(bossX+40,ground-65,'#e7f8ff',35,5);shake=14;message="¡Metrópolis está a salvo!"}
+ if(bossActive&&bossHealth<=0){
+  burst(bossX+40,ground-65,bossPhase===1?'#ffcc69':(bossPhase===2?'#ff8d45':'#8cf5ff'),55,7);
+  burst(bossX+40,ground-65,'#e7f8ff',35,5);shake=14;
+  if(bossPhase<3){bossPhase++;bossHealth=8;bossCooldown=90;bossAttackClock=65;bossShots.length=0;message=`¡Nuevo jefe! Fase ${bossPhase}/3 · prepárate para su ataque`;}
+  else {won=true;message="¡Los tres capítulos están a salvo!";if(score>bestScore){bestScore=score;try{localStorage.setItem('supervsk_best',String(bestScore))}catch(_){}}}
+ }
  if(energy<=0&&!won){energy=35;hero.x=checkpointX;hero.y=ground-hero.h;hero.vx=0;hero.vy=-3;hero.inv=100;cam=Math.max(0,Math.min(worldW-W,hero.x-W*.36));message="Punto de control: recuperas fuerzas. ¡Sigue!";burst(hero.x+17,hero.y+28,"#8cecff",24,4);}
- cam=Math.max(0,Math.min(worldW-W,hero.x-W*.36));
+ const cameraTarget=Math.max(0,Math.min(worldW-W,hero.x-W*.36));
+ cam+=(cameraTarget-cam)*0.14;
+ if(Math.abs(cameraTarget-cam)<0.15)cam=cameraTarget;
  if(hero.x>worldW-150&&bossHealth<=0)won=true;
  status.textContent=`ENERGÍA ${Math.round(energy)} · ${flying?'VOLANDO':'VUELO LISTO'}`;
 }
-function loop(){update();draw();requestAnimationFrame(loop)}loop();
+// Fixed-step simulation: consistent physics on 60/90/120 Hz screens.
+const STEP_MS=1000/60;
+let lastFrameTime=0,accumulator=0;
+function loop(timestamp){
+ if(!lastFrameTime)lastFrameTime=timestamp;
+ const elapsed=Math.min(100,Math.max(0,timestamp-lastFrameTime));
+ lastFrameTime=timestamp;
+ accumulator+=elapsed;
+ let steps=0;
+ while(accumulator>=STEP_MS&&steps<5){
+  update();
+  accumulator-=STEP_MS;
+  steps++;
+ }
+ // Drop excessive backlog after tab suspension to avoid a catch-up spiral.
+ if(steps===5)accumulator=0;
+ draw();
+ requestAnimationFrame(loop);
+}
+requestAnimationFrame(loop);
 document.getElementById('start').addEventListener('click',()=>{started=true;overlay.style.display='none'});
 function bindHold(id,k){
  const el=document.getElementById(id);
