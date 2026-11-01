@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>SUPERVSK · El despertar V44</title>
+<title>SUPERVSK · El despertar V48</title>
 <style>
 :root{color-scheme:dark;font-family:system-ui,-apple-system,Segoe UI,Arial,sans-serif} body{background:#071326} #game{background:linear-gradient(#102c50,#f2a66d)}
 *{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;min-height:100%;overflow:hidden;background:#07152d;touch-action:none;overscroll-behavior:none}
@@ -30,11 +30,11 @@ canvas{display:block;position:absolute;inset:0;width:100%;height:100%;image-rend
 #stick{width:132px;height:132px;flex:0 0 132px;border-radius:50%;border:2px solid #d9edff99;background:radial-gradient(circle at 35% 28%,#24517a99,#071b39eF);position:relative;touch-action:none;pointer-events:auto;box-shadow:0 8px 24px #0009,inset 0 2px 14px #8bcfff22;-webkit-tap-highlight-color:transparent}
 #knob{width:54px;height:54px;position:absolute;left:37px;top:37px;border-radius:50%;background:linear-gradient(145deg,#e5f7ff,#79b8ed);border:3px solid white;box-shadow:0 3px 12px #000b,inset 0 2px 5px #fff;pointer-events:none}
 #stick::after{content:"";position:absolute;inset:18%;border:1px dashed #d9edff44;border-radius:50%;pointer-events:none}
-#overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(#06152dcc,#07152dee);padding:22px}
+#overlay{position:absolute;inset:0;z-index:20;display:flex;pointer-events:auto;align-items:center;justify-content:center;background:linear-gradient(#06152dcc,#07152dee);padding:22px}
 .panel{max-width:480px;text-align:center;background:#10294a;border:3px solid #8bd4ff;border-radius:5px;padding:25px;box-shadow:6px 6px 0 #020b19,0 0 0 3px #244a70}
 h1{margin:0;color:#fff;font-size:clamp(32px,8vw,56px);letter-spacing:.08em;text-shadow:3px 3px 0 #b32939,5px 5px 0 #06152d}
 .panel p{color:#d5e8ff;line-height:1.5}
-#start{border:0;border-radius:12px;background:#e33b4b;color:white;font-weight:900;padding:14px 25px;font-size:16px}
+#start{position:relative;z-index:21;pointer-events:auto;touch-action:manipulation;-webkit-tap-highlight-color:transparent;cursor:pointer;border:0;border-radius:12px;background:#e33b4b;color:white;font-weight:900;padding:14px 25px;font-size:16px}
 .small{font-size:11px;color:#a9c8ec!important}
 #pause{position:absolute;right:14px;top:58px;z-index:3;border:1px solid #b8dcff88;border-radius:10px;background:#06152dcc;color:#fff;padding:9px 12px;font-weight:900}
 #fullscreen{position:absolute;right:14px;top:105px;z-index:3;border:1px solid #b8dcff88;border-radius:10px;background:#06152dcc;color:#fff;padding:8px 10px;font-size:11px;font-weight:900}
@@ -85,12 +85,35 @@ h1{margin:0;color:#fff;font-size:clamp(32px,8vw,56px);letter-spacing:.08em;text-
 #missionCard{position:absolute!important;z-index:4!important;top:72px!important;left:14px!important;right:auto!important;width:max-content!important;max-width:min(430px,calc(100vw - 28px))!important;box-sizing:border-box!important;padding:7px 11px!important;background:rgba(5,19,42,.96)!important;border:2px solid #8bd4ff!important;border-left:5px solid #ffcf65!important;color:#fff!important;font:900 11px/1.25 system-ui!important;white-space:normal!important;overflow-wrap:anywhere!important;text-shadow:1px 1px 2px #001!important;box-shadow:2px 3px 0 #020b19!important;pointer-events:none!important}
 @media(max-height:430px) and (orientation:landscape){#missionCard{top:52px!important;left:9px!important;max-width:min(380px,calc(100vw - 18px))!important;font-size:9px!important;padding:5px 8px!important}}
 @media(orientation:portrait){#missionCard{top:62px!important;left:8px!important;max-width:calc(100vw - 16px)!important;font-size:10px!important}}
+
+/* V48 · controles táctiles revisados */
+#controls{padding-left:max(12px,env(safe-area-inset-left));padding-right:max(12px,env(safe-area-inset-right));gap:clamp(8px,2vw,22px)}
+#stick{width:clamp(104px,17vw,142px);height:clamp(104px,17vw,142px);flex-basis:clamp(104px,17vw,142px);border:3px solid #a9e5ff;box-shadow:0 0 0 5px #07182a99,0 9px 26px #000b,inset 0 0 22px #70caff44}
+#knob{width:clamp(48px,7vw,60px);height:clamp(48px,7vw,60px);left:50%;top:50%;transform:translate(-50%,-50%);border:3px solid #fff;box-shadow:0 4px 12px #000c,inset 0 3px 7px #fff}
+.action-grid{grid-template-columns:repeat(3,minmax(58px,clamp(64px,8vw,82px)));grid-template-rows:repeat(2,clamp(54px,8.5vh,70px));gap:clamp(6px,1.1vw,11px)}
+.ctrl{min-width:58px;min-height:54px;border-radius:15px;font-size:clamp(10px,1.5vw,13px);border:2px solid #d9f3ff;box-shadow:0 5px 0 #031329,0 8px 17px #0009,inset 0 2px 5px #ffffff55;transition:transform .08s,filter .08s}
+.ctrl:active,.ctrl.active{filter:brightness(1.25);transform:translateY(3px) scale(.97);box-shadow:0 2px 0 #031329,0 0 20px #36aaffaa}
+.ctrl.big{border-radius:16px}
+@media(orientation:portrait){
+ #controls{align-items:end;padding-bottom:max(8px,env(safe-area-inset-bottom));gap:6px}
+ #stick{width:clamp(94px,25vw,124px);height:clamp(94px,25vw,124px);flex-basis:clamp(94px,25vw,124px)}
+ .action-grid{grid-template-columns:repeat(3,minmax(54px,1fr));grid-template-rows:repeat(2,clamp(48px,7.5vh,60px));gap:6px;width:min(59vw,270px)}
+ .ctrl{min-width:0;min-height:48px;padding:2px;font-size:10px}
+}
+@media(max-height:430px) and (orientation:landscape){
+ #controls{bottom:max(5px,env(safe-area-inset-bottom));padding-left:10px;padding-right:10px}
+ #stick{width:88px;height:88px;flex-basis:88px}
+ #knob{width:40px;height:40px}
+ .action-grid{grid-template-columns:repeat(3,58px);grid-template-rows:repeat(2,43px);gap:5px}
+ .ctrl{min-height:42px;min-width:54px;font-size:9px;border-radius:11px}
+}
+
 </style>
 </head>
 <body>
 <div id="game">
 <canvas id="c"></canvas>
-<div id="hud"><div class="pill">SUPERVSK · V44</div><div class="pill" id="status">ENERGÍA 100 · VUELO LISTO</div></div>
+<div id="hud"><div class="pill">SUPERVSK · V48</div><div class="pill" id="status">ENERGÍA 100 · VUELO LISTO</div></div>
 <button id="pause" aria-label="Pausar">Ⅱ PAUSA</button>
 <button id="fullscreen" aria-label="Activar pantalla completa">⛶ PANTALLA</button>
 <div id="missionCard" aria-live="polite">MISIÓN 1 · Recupera los 11 núcleos</div>
@@ -107,13 +130,33 @@ h1{margin:0;color:#fff;font-size:clamp(32px,8vw,56px);letter-spacing:.08em;text-
 </div>
 <div id="overlay"><div class="panel">
 <h1>SUPERVSK</h1>
-<p>CAMPAÑA · CRISIS DE METRÓPOLIS · V44</p>
+<p>CAMPAÑA · CRISIS DE METRÓPOLIS · V48</p>
 <p>Arte renovado: héroe pixel-art animado, capas de profundidad, fábrica con hornos y grúas, fortaleza de hielo, nieve dinámica, enemigos con siluetas y efectos pixelados.</p>
-<button id="start">COMENZAR PARTIDA</button>
-<p class="small">V44 · Pixel-art 32 bits · controles táctiles ampliados · iPhone / iPad · Surface / Windows</p>
+<button id="start" type="button">COMENZAR PARTIDA</button>
+<p class="small">V48 · Pixel-art 32 bits · controles táctiles ampliados · iPhone / iPad · Surface / Windows</p>
 </div></div>
 <div id="pauseLayer"><div class="panel"><h1>PAUSA</h1><p>La ciudad espera. Tómate un respiro.</p><button id="resume">CONTINUAR</button><button class="secondary" id="restart">REINICIAR</button></div></div>
 </div>
+
+<script>
+/* V48 FIX: elimina de forma robusta la antigua banda de instrucciones si aparece en el DOM. */
+(()=>{
+ const cleanHelp=()=>{
+  document.querySelectorAll('#help,[id*="help" i],[class*="help" i]').forEach(el=>{
+   const t=(el.textContent||'').replace(/\s+/g,' ').trim();
+   if(el.id==='help'||/^Mover:\s*joystick/i.test(t)) el.remove();
+  });
+  document.querySelectorAll('body *').forEach(el=>{
+   if(el.children.length===0){
+    const t=(el.textContent||'').replace(/\s+/g,' ').trim();
+    if(/^Mover:\s*joystick\s*\//i.test(t)) el.remove();
+   }
+  });
+ };
+ cleanHelp();
+ new MutationObserver(cleanHelp).observe(document.documentElement,{childList:true,subtree:true,characterData:true});
+})();
+</script>
 <script>
 (()=>{
 const canvas=document.getElementById('c'),ctx=canvas.getContext('2d',{alpha:false,desynchronized:true});
@@ -141,6 +184,8 @@ let message="Explora los tres capítulos y completa sus misiones";
 let stickX=0,stickY=0,touchStickActive=false,padX=0,padY=0;
 const hero={x:90,y:ground-58,vx:0,vy:0,w:34,h:58,onGround:true,facing:1,inv:0};
 const pickups=[520,900,1320,1780,2250,2790,3240,4050,4780,5480,6320].map((x,i)=>({x,y:ground-90-(i%2)*65,baseOffset:90+(i%2)*65,taken:false}));
+const fragments=[350,1160,1870,2520,3410,4380,5290,6010].map((x,i)=>({x,y:ground-145-(i%3)*24,baseOffset:145+(i%3)*24,taken:false,phase:i}));
+let fragmentsFound=0;
 const foes=[760,1480,2110,2900,3650,4210,4720,5180,5740,6380,6600,6800].map((x,i)=>({x,y:ground-38,alive:true,dir:i%2?1:-1,origin:x,range:90+i%3*20,speed:0.65+i%2*.18,type:i%3}));
 const platforms=[
 {x:390,y:345,w:140},{x:850,y:310,w:150},{x:1210,y:355,w:160},{x:1690,y:300,w:170},
@@ -163,6 +208,7 @@ function resize(){
  ctx.imageSmoothingEnabled=false;
  platforms.forEach((p,i)=>{p.y=ground-(430-platformBaseY[i])});
  pickups.forEach(p=>{p.y=ground-(p.baseOffset||90)});
+ fragments.forEach(p=>{p.y=ground-(p.baseOffset||145)});
  foes.forEach(f=>{f.y=ground-38});
  civilians.forEach(c=>{c.y=ground-48});
  relays.forEach(r=>{r.y=ground-92});
@@ -491,6 +537,13 @@ function draw(){
  ctx.fillStyle='#bdeeff';ctx.fillRect(x+5,p.y+2,p.w-10,2);
  ctx.fillStyle='#10243a';for(let q=x+12;q<x+p.w-8;q+=26){ctx.beginPath();ctx.arc(q,p.y+12,2,0,7);ctx.fill()}
  }});
+ fragments.forEach(p=>{if(!p.taken){const x=p.x-cam,y=p.y+Math.sin(frame*.09+p.phase)*7;
+ if(x>-40&&x<W+40){ctx.save();ctx.translate(x,y);ctx.rotate(Math.PI/4+Math.sin(frame*.035+p.phase)*.12);
+ ctx.globalCompositeOperation='lighter';ctx.shadowColor='#56eaff';ctx.shadowBlur=22;
+ const g=ctx.createLinearGradient(-10,-10,10,10);g.addColorStop(0,'#ffffff');g.addColorStop(.45,'#72f4ff');g.addColorStop(1,'#1686ff');
+ ctx.fillStyle=g;ctx.fillRect(-9,-9,18,18);ctx.strokeStyle='#e5ffff';ctx.lineWidth=2;ctx.strokeRect(-9,-9,18,18);
+ ctx.fillStyle='#fff';ctx.fillRect(-2,-2,4,4);ctx.restore();}}
+ });
  pickups.forEach(p=>{if(!p.taken){let x=p.x-cam,y=p.y+Math.sin(frame*.08)*5;
  ctx.save();ctx.globalCompositeOperation='lighter';
  const halo=ctx.createRadialGradient(x,y,2,x,y,27);halo.addColorStop(0,'#fff7bbaa');halo.addColorStop(.35,'#ffd84d66');halo.addColorStop(1,'#ffd84d00');
@@ -580,7 +633,7 @@ function draw(){
  rect(14,H-18,120,6,'#102a48');rect(14,H-18,120*energy/100,6,'#f4d45d');
  ctx.fillStyle='#f5fbff';ctx.font='800 13px system-ui';ctx.textAlign='left';ctx.shadowColor='#00182d';ctx.shadowBlur=7;ctx.fillText(`NÚCLEOS ${rescued}/11   CIVILES ${civiliansRescued}/6   PATRULLAS ${patrolsDefeated}/12   PUNTOS ${score}`,14,92);ctx.shadowBlur=0;
  ctx.fillStyle='#fff4d9';ctx.font='600 12px system-ui';ctx.shadowColor='#00182d';ctx.shadowBlur=7;ctx.fillText(message,14,112);
- ctx.fillStyle='#bcecff';ctx.font='700 11px system-ui';ctx.fillText(`BALIZAS ${relaysDestroyed}/6   SUPER CÉLULAS ${superCells.filter(p=>p.taken).length}/6`,14,130);ctx.shadowBlur=0;
+ ctx.fillStyle='#bcecff';ctx.font='700 11px system-ui';ctx.fillText(`BALIZAS ${relaysDestroyed}/6   SUPER CÉLULAS ${superCells.filter(p=>p.taken).length}/6   FRAGMENTOS ${fragmentsFound}/8`,14,130);ctx.shadowBlur=0;
  // Fine retro pixel finish: subtle scanlines and edge vignette.
  ctx.save();ctx.globalAlpha=.075;ctx.fillStyle='#061426';
  for(let y=0;y<H;y+=4)ctx.fillRect(0,y,W,1);
@@ -645,6 +698,11 @@ function update(){
  hero.onGround=false;
  if(hero.y+hero.h>=ground){hero.y=ground-hero.h;hero.vy=0;hero.onGround=true}
  platforms.forEach(p=>{if(hero.x+hero.w>p.x&&hero.x<p.x+p.w&&hero.y+hero.h>=p.y&&hero.y+hero.h<=p.y+18&&hero.vy>=0){hero.y=p.y-hero.h;hero.vy=0;hero.onGround=true}});
+ fragments.forEach(p=>{if(!p.taken&&Math.abs(hero.x+17-p.x)<25&&Math.abs(hero.y+25-p.y)<30){
+ p.taken=true;fragmentsFound++;score+=250;energy=Math.min(100,energy+10);
+ burst(p.x,p.y,'#69edff',20,4);shake=2;
+ message=`Fragmento de energía ${fragmentsFound}/8 · +250 puntos`;
+ }});
  pickups.forEach(p=>{if(!p.taken&&Math.abs(hero.x+17-p.x)<25&&Math.abs(hero.y+25-p.y)<32){p.taken=true;energy=Math.min(100,energy+18);score+=100;rescued++;checkpointX=Math.max(checkpointX,Math.max(90,p.x-70));burst(p.x,p.y,'#ffe36c',22,4);shake=3;message=`Núcleo recuperado (${rescued}/7)`}});
  superCells.forEach(p=>{if(!p.taken&&Math.abs(hero.x+17-p.x)<28&&Math.abs(hero.y+25-p.y)<35){p.taken=true;energy=Math.min(100,energy+35);shieldTimer=600;score+=350;burst(p.x,p.y,'#7cf7ff',28,4);message="¡Supercélula! Energía restaurada y escudo temporal";}});
  if(shieldTimer>0)shieldTimer--;
@@ -710,7 +768,20 @@ function loop(timestamp){
  requestAnimationFrame(loop);
 }
 requestAnimationFrame(loop);
-document.getElementById('start').addEventListener('click',()=>{started=true;overlay.style.display='none'});
+// V48: inicio robusto en Safari/iPad y navegadores de escritorio.
+const startButton=document.getElementById('start');
+let startActivated=false;
+function startGame(e){
+ if(e){e.preventDefault();e.stopPropagation();}
+ if(startActivated)return;
+ startActivated=true;
+ started=true;
+ overlay.style.display='none';
+ overlay.style.pointerEvents='none';
+}
+startButton.addEventListener('click',startGame,{passive:false});
+startButton.addEventListener('touchend',startGame,{passive:false});
+startButton.addEventListener('pointerup',startGame,{passive:false});
 function bindHold(id,k){
  const el=document.getElementById(id);
  const activePointers=new Set();
