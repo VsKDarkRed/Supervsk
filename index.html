@@ -7,13 +7,13 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>SUPERVSK · El despertar V48</title>
+<title>SUPERVSK · El despertar V50</title>
 <style>
 :root{color-scheme:dark;font-family:system-ui,-apple-system,Segoe UI,Arial,sans-serif} body{background:#071326} #game{background:linear-gradient(#102c50,#f2a66d)}
 *{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;min-height:100%;overflow:hidden;background:#07152d;touch-action:none;overscroll-behavior:none}
 body{display:flex;align-items:center;justify-content:center}
 #game{position:fixed;inset:0;width:100%;height:100%;height:100dvh;min-height:100svh;background:#07152d;overflow:hidden;isolation:isolate}
-canvas{display:block;position:absolute;inset:0;width:100%;height:100%;image-rendering:pixelated;touch-action:none;contain:strict}
+canvas{display:block;position:absolute;inset:0;width:100%;height:100%;image-rendering:auto;touch-action:none;contain:strict}
 #hud{position:absolute;inset:env(safe-area-inset-top) 0 auto 0;display:flex;justify-content:space-between;align-items:stretch;gap:10px;padding:12px 14px;pointer-events:none;text-shadow:0 2px 4px #001;color:#fff;z-index:2}
 .pill{box-sizing:border-box;min-width:0;color:#fff;background:linear-gradient(180deg,#102e58f5,#071a36f5);border:2px solid #8bd4ff;border-radius:4px;padding:8px 12px;font-size:12px;line-height:1.25;letter-spacing:.06em;box-shadow:3px 3px 0 #020b19,0 0 0 2px #102746;backdrop-filter:none;text-shadow:1px 1px #06152d;display:flex;align-items:center}
 #hud>.pill:first-child{flex:0 1 38%}
@@ -86,7 +86,7 @@ h1{margin:0;color:#fff;font-size:clamp(32px,8vw,56px);letter-spacing:.08em;text-
 @media(max-height:430px) and (orientation:landscape){#missionCard{top:52px!important;left:9px!important;max-width:min(380px,calc(100vw - 18px))!important;font-size:9px!important;padding:5px 8px!important}}
 @media(orientation:portrait){#missionCard{top:62px!important;left:8px!important;max-width:calc(100vw - 16px)!important;font-size:10px!important}}
 
-/* V48 · controles táctiles revisados */
+/* V50 · controles táctiles revisados */
 #controls{padding-left:max(12px,env(safe-area-inset-left));padding-right:max(12px,env(safe-area-inset-right));gap:clamp(8px,2vw,22px)}
 #stick{width:clamp(104px,17vw,142px);height:clamp(104px,17vw,142px);flex-basis:clamp(104px,17vw,142px);border:3px solid #a9e5ff;box-shadow:0 0 0 5px #07182a99,0 9px 26px #000b,inset 0 0 22px #70caff44}
 #knob{width:clamp(48px,7vw,60px);height:clamp(48px,7vw,60px);left:50%;top:50%;transform:translate(-50%,-50%);border:3px solid #fff;box-shadow:0 4px 12px #000c,inset 0 3px 7px #fff}
@@ -113,7 +113,7 @@ h1{margin:0;color:#fff;font-size:clamp(32px,8vw,56px);letter-spacing:.08em;text-
 <body>
 <div id="game">
 <canvas id="c"></canvas>
-<div id="hud"><div class="pill">SUPERVSK · V48</div><div class="pill" id="status">ENERGÍA 100 · VUELO LISTO</div></div>
+<div id="hud"><div class="pill">SUPERVSK · V50</div><div class="pill" id="status">ENERGÍA 100 · VUELO LISTO</div></div>
 <button id="pause" aria-label="Pausar">Ⅱ PAUSA</button>
 <button id="fullscreen" aria-label="Activar pantalla completa">⛶ PANTALLA</button>
 <div id="missionCard" aria-live="polite">MISIÓN 1 · Recupera los 11 núcleos</div>
@@ -130,16 +130,16 @@ h1{margin:0;color:#fff;font-size:clamp(32px,8vw,56px);letter-spacing:.08em;text-
 </div>
 <div id="overlay"><div class="panel">
 <h1>SUPERVSK</h1>
-<p>CAMPAÑA · CRISIS DE METRÓPOLIS · V48</p>
+<p>CAMPAÑA · CRISIS DE METRÓPOLIS · V50</p>
 <p>Arte renovado: héroe pixel-art animado, capas de profundidad, fábrica con hornos y grúas, fortaleza de hielo, nieve dinámica, enemigos con siluetas y efectos pixelados.</p>
 <button id="start" type="button">COMENZAR PARTIDA</button>
-<p class="small">V48 · Pixel-art 32 bits · controles táctiles ampliados · iPhone / iPad · Surface / Windows</p>
+<p class="small">V50 · Pixel-art 32 bits · controles táctiles ampliados · iPhone / iPad · Surface / Windows</p>
 </div></div>
 <div id="pauseLayer"><div class="panel"><h1>PAUSA</h1><p>La ciudad espera. Tómate un respiro.</p><button id="resume">CONTINUAR</button><button class="secondary" id="restart">REINICIAR</button></div></div>
 </div>
 
 <script>
-/* V48 FIX: elimina de forma robusta la antigua banda de instrucciones si aparece en el DOM. */
+/* V50 FIX: elimina de forma robusta la antigua banda de instrucciones si aparece en el DOM. */
 (()=>{
  const cleanHelp=()=>{
   document.querySelectorAll('#help,[id*="help" i],[class*="help" i]').forEach(el=>{
@@ -160,7 +160,7 @@ h1{margin:0;color:#fff;font-size:clamp(32px,8vw,56px);letter-spacing:.08em;text-
 <script>
 (()=>{
 const canvas=document.getElementById('c'),ctx=canvas.getContext('2d',{alpha:false,desynchronized:true});
-ctx.imageSmoothingEnabled=false;
+ctx.imageSmoothingEnabled=true;
 document.addEventListener('contextmenu',e=>e.preventDefault());
 document.addEventListener('gesturestart',e=>e.preventDefault());
 const status=document.getElementById('status'),overlay=document.getElementById('overlay');
@@ -199,13 +199,13 @@ function resize(){
  H=Math.max(240,Math.round(vv?.height||window.innerHeight));
  ground=Math.round(H*.80);
  const landscape=W>=H;
- const virtualLong=480;
+ const virtualLong=960;
  const scale=virtualLong/(landscape?W:H);
  canvas.width=Math.max(160,Math.round(W*scale));
  canvas.height=Math.max(160,Math.round(H*scale));
  canvas.style.width=W+'px';canvas.style.height=H+'px';
  ctx.setTransform(canvas.width/W,0,0,canvas.height/H,0,0);
- ctx.imageSmoothingEnabled=false;
+ ctx.imageSmoothingEnabled=true;
  platforms.forEach((p,i)=>{p.y=ground-(430-platformBaseY[i])});
  pickups.forEach(p=>{p.y=ground-(p.baseOffset||90)});
  fragments.forEach(p=>{p.y=ground-(p.baseOffset||145)});
@@ -356,6 +356,49 @@ function drawCity(){
  ctx.fillStyle=vignette;ctx.fillRect(0,0,W,H);
 }
 
+
+// V50: foreground architecture, construction crane and airborne traffic.
+function drawV50CityDetails(){
+ const chapter=hero.x<2300?1:(hero.x<4600?2:3);
+ ctx.save();
+ // distant elevated transit / aerial traffic, moving independently from the camera
+ const airX=((W*.72-cam*.09+frame*.18)%(W+150)+W+150)%(W+150)-70;
+ ctx.fillStyle='#172b42';ctx.beginPath();ctx.ellipse(airX,H*.22,24,7,0,0,7);ctx.fill();
+ ctx.fillStyle='#6fdcff';ctx.fillRect(airX-15,H*.20,30,2);
+ ctx.strokeStyle='#20364b';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(airX-10,H*.18);ctx.lineTo(airX+12,H*.18);ctx.moveTo(airX+1,H*.14);ctx.lineTo(airX+1,H*.2);ctx.stroke();
+ ctx.fillStyle='#d9f6ff';ctx.fillRect(airX+18,H*.215,3,2);
+ // Tall VSK headquarters in the far-middle plane.
+ const towerX=((W*.58-cam*.39)%(W+340)+W+340)%(W+340)-120;
+ const ty=ground-H*.68, tw=Math.max(48,W*.075), th=H*.48;
+ const tg=ctx.createLinearGradient(towerX,ty,towerX+tw,ty+th);
+ tg.addColorStop(0,'#263e62');tg.addColorStop(.5,'#102a4b');tg.addColorStop(1,'#08182f');
+ ctx.fillStyle=tg;ctx.fillRect(towerX,ty,tw,th);
+ ctx.fillStyle='#4bc9f5';ctx.fillRect(towerX+tw*.12,ty,tw*.76,3);
+ for(let yy=ty+12;yy<ty+th-8;yy+=14){
+  ctx.fillStyle=(Math.floor(yy/14)%3===0)?'#f9b95c':'#49b9e8';
+  ctx.globalAlpha=.65;ctx.fillRect(towerX+tw*.17,yy,tw*.66,3);ctx.globalAlpha=1;
+ }
+ ctx.fillStyle='#eaf8ff';ctx.font=`900 ${Math.max(8,Math.min(14,H*.025))}px system-ui`;
+ ctx.textAlign='center';ctx.shadowColor='#54cfff';ctx.shadowBlur=12;
+ ctx.fillText('VSK',towerX+tw/2,ty+th*.37);ctx.shadowBlur=0;
+ // Construction crane silhouette in the first and second chapters.
+ if(chapter!==3){
+  const cx=((W*.26-cam*.57)%(W+280)+W+280)%(W+280)-90;
+  const cy=ground-H*.43;
+  ctx.strokeStyle='#172b43';ctx.lineWidth=5;ctx.beginPath();
+  ctx.moveTo(cx,cy+H*.42);ctx.lineTo(cx,cy);ctx.lineTo(cx+W*.25,cy);ctx.moveTo(cx+W*.13,cy);ctx.lineTo(cx+W*.13,cy+H*.1);
+  ctx.stroke();
+  ctx.strokeStyle='#d99c59';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(cx+8,cy+5);ctx.lineTo(cx+W*.25-8,cy+5);ctx.stroke();
+  ctx.fillStyle='#f3bc69';ctx.fillRect(cx+W*.19,cy-3,8,6);
+  for(let i=1;i<6;i++){ctx.strokeStyle='#6f8495';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(cx+i*W*.045,cy);ctx.lineTo(cx+(i-1)*W*.045,cy+H*.035);ctx.stroke();}
+ }
+ // Warm window glints and a subtle neon horizon.
+ const neon=ctx.createLinearGradient(0,ground-H*.18,W,ground-H*.18);
+ neon.addColorStop(0,'#38bce900');neon.addColorStop(.5,'#38bce955');neon.addColorStop(1,'#ff9d4a00');
+ ctx.fillStyle=neon;ctx.fillRect(0,ground-H*.18,W,2);
+ ctx.restore();
+}
+
 function drawChapterAtmosphere(){
  const chapter=hero.x<2300?1:(hero.x<4600?2:3);
  ctx.save();
@@ -432,59 +475,84 @@ function drawChapterAtmosphere(){
 }
 
 function drawHero(){
- const sx=hero.x-cam+hero.w/2,sy=hero.y+hero.h/2;
- const running=Math.abs(hero.vx)>.5&&!keys.fly&&!hero.onGround?Math.sin(frame*.45):Math.sin(frame*.28);
- const bob=hero.onGround?Math.abs(Math.sin(frame*.22))*1.2:0;
- ctx.save();
- ctx.translate(Math.round(sx),Math.round(sy+bob));
- ctx.scale(hero.facing,1);
- if(hero.inv>0&&Math.floor(frame/4)%2===0)ctx.globalAlpha=.48;
- // Pixel shadow and cape silhouette.
- ctx.fillStyle='#07132388';ctx.fillRect(-17,27,34,5);
- const capeWave=Math.round(Math.sin(frame*.22)*3);
- ctx.fillStyle='#35142f';ctx.fillRect(-16,-19,12,34);ctx.fillStyle='#54152f';ctx.fillRect(-14,-18,9,31);
- ctx.fillStyle='#b51f43';ctx.fillRect(-17,-16,10,27+capeWave);
- ctx.fillStyle='#f35b68';ctx.fillRect(-14,-17,5,19);ctx.fillStyle='#ff9b91';ctx.fillRect(-17,5+capeWave,3,7);
- ctx.fillStyle='#7b1836';ctx.fillRect(-17,8+capeWave,7,7);
- // Boots and legs, animated in two clear poses.
- const legA=Math.round(running*2),legB=-legA;
- ctx.fillStyle='#09295d';ctx.fillRect(-9,13+legA,7,11);ctx.fillRect(3,13+legB,7,11);
- ctx.fillStyle='#176bd0';ctx.fillRect(-10,5+legA,8,13);ctx.fillRect(2,5+legB,8,13);
- ctx.fillStyle='#b51f3d';ctx.fillRect(-11,22+legA,10,5);ctx.fillRect(1,22+legB,11,5);
- ctx.fillStyle='#ff7780';ctx.fillRect(-10,22+legA,4,2);ctx.fillRect(2,22+legB,4,2);
- // Torso: dark outline, blue suit panels and shoulder highlights.
- ctx.fillStyle='#061b42';ctx.fillRect(-13,-19,26,27);
- ctx.fillStyle='#0753a5';ctx.fillRect(-11,-20,22,25);
- ctx.fillStyle='#1688ed';ctx.fillRect(-9,-20,13,21);
- ctx.fillStyle='#63caff';ctx.fillRect(-9,-19,5,10);ctx.fillStyle='#b7efff';ctx.fillRect(-8,-8,3,8);
- ctx.fillStyle='#063777';ctx.fillRect(4,-16,6,18);
- ctx.fillStyle='#9eeaff';ctx.fillRect(-13,-18,4,6);ctx.fillRect(9,-18,4,6);
- // Iconic chest shield, designed as a pixel emblem.
- ctx.fillStyle='#f8d65d';ctx.fillRect(-6,-15,13,12);
- ctx.fillStyle='#a51f37';ctx.fillRect(-4,-13,9,8);
- ctx.fillStyle='#fff0a1';ctx.fillRect(-4,-14,3,2);ctx.fillStyle='#ffefbd';ctx.fillRect(3,-13,2,2);
- ctx.fillStyle='#f9d65d';ctx.fillRect(-2,-12,2,5);ctx.fillRect(1,-10,3,3);
- // Arms and gloves.
- ctx.fillStyle='#09295d';ctx.fillRect(-16,-17,5,17);ctx.fillRect(11,-17,5,17);
- ctx.fillStyle='#1478d5';ctx.fillRect(-16,-17,5,10);ctx.fillRect(11,-17,5,10);
- ctx.fillStyle='#f1bd91';ctx.fillRect(-16,-2,5,5);ctx.fillRect(11,-2,5,5);
- ctx.fillStyle='#f8d9ae';ctx.fillRect(-15,-3,3,2);ctx.fillRect(12,-3,3,2);
- // Head, hair, face and eye.
- ctx.fillStyle='#6b342d';ctx.fillRect(-8,-31,17,14);
- ctx.fillStyle='#f0bd91';ctx.fillRect(-7,-30,14,13);
- ctx.fillStyle='#ffd8ae';ctx.fillRect(-6,-29,7,6);
- ctx.fillStyle='#38232a';ctx.fillRect(-8,-32,16,5);ctx.fillRect(-8,-29,4,4);ctx.fillRect(5,-30,4,3);
- ctx.fillStyle='#202c45';ctx.fillRect(3,-24,3,2);
- ctx.fillStyle='#8e4b45';ctx.fillRect(-1,-20,4,2);
- // Flight aura and speed pixels.
- if(keys.fly||!hero.onGround){
-  ctx.globalCompositeOperation='lighter';ctx.globalAlpha=.55;
-  ctx.fillStyle='#5edfff';ctx.fillRect(-22,-8,3,17);ctx.fillRect(18,-2,3,13);
-  ctx.fillStyle='#e5ffff';ctx.fillRect(-20,8,2,8);ctx.fillRect(19,10,2,6);
- }
+ const sx=hero.x-cam+hero.w/2, sy=hero.y+hero.h/2;
+ const movingOnGround=hero.onGround&&Math.abs(hero.vx)>.18;
+ const run=movingOnGround?Math.sin(frame*.30):0, airborne=!hero.onGround;
+ const cape=Math.sin(frame*.12)*8+(keys.fly?-12:0);
+ ctx.save();ctx.translate(sx,sy);ctx.scale(hero.facing,1);
+ if(hero.inv>0&&Math.floor(frame/4)%2===0)ctx.globalAlpha=.45;
+
+ // Contact shadow and atmospheric flight glow.
+ ctx.fillStyle='#06142666';ctx.beginPath();ctx.ellipse(0,31,22,5,0,0,Math.PI*2);ctx.fill();
+ if(keys.fly||airborne){ctx.save();ctx.globalCompositeOperation='lighter';
+ const aura=ctx.createRadialGradient(0,5,5,0,5,43);
+ aura.addColorStop(0,'#7ceaff55');aura.addColorStop(1,'#39aaff00');
+ ctx.fillStyle=aura;ctx.beginPath();ctx.ellipse(0,4,34,43,0,0,7);ctx.fill();ctx.restore();}
+
+ // Flowing cape with curved silhouette and fabric highlights.
+ const capeGrad=ctx.createLinearGradient(-35,-20,3,25);
+ capeGrad.addColorStop(0,'#ff6674');capeGrad.addColorStop(.45,'#c51f42');capeGrad.addColorStop(1,'#5c1236');
+ ctx.fillStyle='#350f2b';ctx.beginPath();ctx.moveTo(-8,-22);ctx.quadraticCurveTo(-28,-28,-34,-17+cape*.25);
+ ctx.quadraticCurveTo(-28,2,-39,23+cape);ctx.quadraticCurveTo(-20,18,-12,9);ctx.lineTo(-5,-9);ctx.closePath();ctx.fill();
+ ctx.fillStyle=capeGrad;ctx.beginPath();ctx.moveTo(-8,-22);ctx.quadraticCurveTo(-24,-27,-31,-16+cape*.2);
+ ctx.quadraticCurveTo(-23,0,-34,20+cape);ctx.quadraticCurveTo(-19,14,-10,6);ctx.lineTo(-4,-10);ctx.closePath();ctx.fill();
+ ctx.strokeStyle='#ff9b9e';ctx.globalAlpha*=.75;ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(-12,-18);ctx.quadraticCurveTo(-22,-4,-27,12+cape*.5);ctx.stroke();ctx.globalAlpha=1;
+
+ // Legs, boots and articulated knee highlights.
+ const stride=movingOnGround?run*5:(airborne?(keys.fly?-2:1):0);
+ const leg=(x,phase)=>{
+   ctx.save();ctx.translate(x,7);ctx.rotate(phase*.045);
+   const lg=ctx.createLinearGradient(-5,0,7,23);lg.addColorStop(0,'#278ef0');lg.addColorStop(.55,'#0750a8');lg.addColorStop(1,'#06234f');
+   ctx.fillStyle='#061a3b';ctx.beginPath();ctx.moveTo(-6,-1);ctx.lineTo(6,-1);ctx.lineTo(7,17);ctx.lineTo(4,24);ctx.lineTo(-7,22);ctx.closePath();ctx.fill();
+   ctx.fillStyle=lg;ctx.beginPath();ctx.moveTo(-4,0);ctx.lineTo(5,0);ctx.lineTo(5,16);ctx.lineTo(2,21);ctx.lineTo(-5,19);ctx.closePath();ctx.fill();
+   ctx.fillStyle='#e33c55';ctx.beginPath();ctx.moveTo(-6,18);ctx.lineTo(6,18);ctx.lineTo(10,25);ctx.lineTo(-9,25);ctx.closePath();ctx.fill();
+   ctx.fillStyle='#ff9a9e';ctx.fillRect(-5,19,8,2);ctx.restore();
+ };
+ leg(-6,stride);leg(6,-stride);
+ // Pelvis / hip armor overlaps the upper legs so the body reads as one rig.
+ const hipGrad=ctx.createLinearGradient(-12,3,12,13);
+ hipGrad.addColorStop(0,'#258de8');hipGrad.addColorStop(.55,'#0752a8');hipGrad.addColorStop(1,'#06234f');
+ ctx.fillStyle='#041632';ctx.beginPath();ctx.moveTo(-11,1);ctx.quadraticCurveTo(0,5,11,1);
+ ctx.lineTo(10,12);ctx.quadraticCurveTo(0,16,-10,12);ctx.closePath();ctx.fill();
+ ctx.fillStyle=hipGrad;ctx.beginPath();ctx.moveTo(-9,2);ctx.quadraticCurveTo(0,6,9,2);
+ ctx.lineTo(8,10);ctx.quadraticCurveTo(0,14,-8,10);ctx.closePath();ctx.fill();
+ ctx.strokeStyle='#8bdfff';ctx.lineWidth=1.2;ctx.beginPath();ctx.moveTo(-7,5);ctx.quadraticCurveTo(0,8,7,5);ctx.stroke();
+
+ // Torso with shaped armor panels and chest crest.
+ const torso=ctx.createLinearGradient(-15,-23,14,8);
+ torso.addColorStop(0,'#53c8ff');torso.addColorStop(.28,'#167de0');torso.addColorStop(.7,'#0750a4');torso.addColorStop(1,'#041d49');
+ ctx.fillStyle='#041632';ctx.beginPath();ctx.moveTo(-12,-24);ctx.quadraticCurveTo(0,-29,12,-23);
+ ctx.lineTo(14,5);ctx.quadraticCurveTo(0,14,-14,5);ctx.closePath();ctx.fill();
+ ctx.fillStyle=torso;ctx.beginPath();ctx.moveTo(-10,-23);ctx.quadraticCurveTo(0,-27,10,-22);
+ ctx.lineTo(11,5);ctx.quadraticCurveTo(0,11,-11,5);ctx.closePath();ctx.fill();
+ ctx.fillStyle='#8be4ff';ctx.beginPath();ctx.moveTo(-9,-20);ctx.lineTo(-4,-22);ctx.lineTo(-5,-5);ctx.lineTo(-10,-2);ctx.closePath();ctx.fill();
+ ctx.fillStyle='#06356e';ctx.beginPath();ctx.moveTo(7,-18);ctx.lineTo(11,-17);ctx.lineTo(10,0);ctx.lineTo(6,2);ctx.closePath();ctx.fill();
+ // Belt and emblem.
+ ctx.fillStyle='#e9b84e';ctx.fillRect(-11,2,22,4);ctx.fillStyle='#fff0a2';ctx.fillRect(-2,2,5,4);
+ ctx.fillStyle='#f4d35e';ctx.beginPath();ctx.moveTo(0,-19);ctx.lineTo(8,-14);ctx.lineTo(6,-5);ctx.lineTo(0,0);ctx.lineTo(-6,-5);ctx.lineTo(-8,-14);ctx.closePath();ctx.fill();
+ ctx.fillStyle='#bd2540';ctx.beginPath();ctx.moveTo(0,-16);ctx.lineTo(5,-13);ctx.lineTo(4,-7);ctx.lineTo(0,-3);ctx.lineTo(-4,-7);ctx.lineTo(-5,-13);ctx.closePath();ctx.fill();
+ ctx.strokeStyle='#fff0b0';ctx.lineWidth=1.4;ctx.beginPath();ctx.moveTo(-3,-12);ctx.lineTo(0,-7);ctx.lineTo(3,-12);ctx.stroke();
+
+ // Shoulders, arms and gloves; right arm moves into a punch pose.
+ const punching=punchTimer>0;
+ ctx.fillStyle='#082755';ctx.beginPath();ctx.ellipse(-12,-19,7,8,-.25,0,7);ctx.fill();
+ ctx.fillStyle='#2c9cf2';ctx.beginPath();ctx.ellipse(-12,-19,5,6,-.25,0,7);ctx.fill();
+ ctx.fillStyle='#0a3472';ctx.beginPath();ctx.moveTo(9,-21);ctx.quadraticCurveTo(17,-22,17,-13);ctx.lineTo(15,-1);ctx.lineTo(9,0);ctx.closePath();ctx.fill();
+ ctx.fillStyle='#258be4';ctx.beginPath();ctx.moveTo(10,-20);ctx.quadraticCurveTo(16,-20,15,-13);ctx.lineTo(13,-4);ctx.lineTo(9,-5);ctx.closePath();ctx.fill();
+ ctx.fillStyle='#f4c49d';ctx.beginPath();ctx.arc(14,punching?-2:1,5,0,7);ctx.fill();
+ ctx.fillStyle='#fff0dc';ctx.beginPath();ctx.arc(15,punching?-3:0,2,0,7);ctx.fill();
+
+ // Neck, face, hair and determined eye.
+ ctx.fillStyle='#e7ad85';ctx.fillRect(-4,-29,8,7);
+ const skin=ctx.createLinearGradient(-7,-43,8,-26);skin.addColorStop(0,'#ffe0b6');skin.addColorStop(1,'#c98267');
+ ctx.fillStyle=skin;ctx.beginPath();ctx.moveTo(-8,-42);ctx.quadraticCurveTo(0,-48,8,-41);ctx.lineTo(7,-29);ctx.quadraticCurveTo(0,-24,-7,-30);ctx.closePath();ctx.fill();
+ ctx.fillStyle='#202538';ctx.beginPath();ctx.moveTo(-9,-39);ctx.quadraticCurveTo(-7,-49,5,-47);ctx.quadraticCurveTo(12,-45,10,-38);ctx.lineTo(5,-40);ctx.lineTo(0,-42);ctx.lineTo(-5,-37);ctx.closePath();ctx.fill();
+ ctx.fillStyle='#151c2e';ctx.fillRect(3,-37,4,2);ctx.fillStyle='#fff';ctx.fillRect(4,-37,2,1);
+ ctx.strokeStyle='#8e514a';ctx.lineWidth=1.4;ctx.beginPath();ctx.moveTo(1,-29);ctx.lineTo(5,-30);ctx.stroke();
+ // Rim light.
+ ctx.strokeStyle='#9deaff';ctx.globalAlpha=.6;ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(10,-22);ctx.lineTo(13,-14);ctx.stroke();ctx.globalAlpha=1;
  ctx.restore();
 }
-
 
 function drawGroundDetail(){
  const chapter=hero.x<2300?1:(hero.x<4600?2:3);
@@ -528,6 +596,7 @@ function draw(){
  ctx.save();
  if(shake>.4)ctx.translate((Math.random()-.5)*shake,(Math.random()-.5)*shake);
  drawCity();
+ drawV50CityDetails();
  drawChapterAtmosphere();
  drawGroundDetail();
  // platforms
@@ -768,7 +837,7 @@ function loop(timestamp){
  requestAnimationFrame(loop);
 }
 requestAnimationFrame(loop);
-// V48: inicio robusto en Safari/iPad y navegadores de escritorio.
+// V50: inicio robusto en Safari/iPad y navegadores de escritorio.
 const startButton=document.getElementById('start');
 let startActivated=false;
 function startGame(e){
@@ -806,7 +875,7 @@ function moveStick(e){
  let dx=e.clientX-cx,dy=e.clientY-cy;
  const max=Math.max(20,(Math.min(r.width,r.height)-54)/2),len=Math.hypot(dx,dy)||1,scale=Math.min(1,max/len);
  dx*=scale;dy*=scale;stickX=dx/max;stickY=dy/max;
- knob.style.transform=`translate(${dx}px,${dy}px)`;
+ knob.style.transform=`translate(calc(-50% + ${dx}px),calc(-50% + ${dy}px))`;
 }
 stick.addEventListener('pointerdown',e=>{
  e.preventDefault();
@@ -818,7 +887,7 @@ stick.addEventListener('pointerdown',e=>{
 stick.addEventListener('pointermove',e=>{if(e.pointerId===stickId)moveStick(e)},{passive:false});
 function resetStick(e){
  if(e&&stickId!==null&&e.pointerId!==stickId)return;
- stickId=null;stickX=0;stickY=0;touchStickActive=false;knob.style.transform='translate(0,0)';
+ stickId=null;stickX=0;stickY=0;touchStickActive=false;knob.style.transform='translate(-50%,-50%)';
 }
 stick.addEventListener('pointerup',resetStick);
 stick.addEventListener('pointercancel',resetStick);
